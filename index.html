@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>EcoCharge T03</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif; background: #f0f4f1; color: #1a2e1c; min-height: 100vh; }
+    .header { background: #fff; border-bottom: 1px solid #dde8de; padding: 12px 16px 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .app-title { font-size: 20px; font-weight: 800; color: #1a2e1c; }
+    .app-title span { color: #2d7a3a; }
+    .badge { font-size: 11px; background: #e8f5eb; color: #2d7a3a; border: 1px solid #b6debb; padding: 3px 10px; border-radius: 20px; font-weight: 600; }
+    .car-banner { background: linear-gradient(135deg, #e8f5eb, #d0edcf); border-radius: 14px; margin: 0 0 10px; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; border: 1px solid #b6debb; }
+    .car-brand { font-size: 10px; color: #2d7a3a; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+    .car-model { font-size: 22px; font-weight: 800; color: #1a2e1c; }
+    .car-spec { font-size: 11px; color: #4a6b4e; margin-top: 2px; }
+    .tabs { display: flex; gap: 4px; padding-bottom: 0; }
+    .tab { flex: 1; padding: 9px 4px; text-align: center; font-size: 12px; font-weight: 700; border-radius: 10px 10px 0 0; cursor: pointer; color: #8fa894; border: none; background: transparent; font-family: inherit; }
+    .tab.active { background: #f0f4f1; color: #2d7a3a; border-bottom: 3px solid #2d7a3a; }
+    .content { padding: 0 16px 32px; }
+    .page { display: none; }
+    .page.active { display: block; }
+    .slabel { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: #8fa894; text-transform: uppercase; margin: 16px 0 8px; }
+    .card { background: #fff; border: 1px solid #dde8de; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; box-shadow: 0 1px 6px rgba(0,0,0,0.05); }
+    .card-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #eef3ef; }
+    .card-icon { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+    .card-lbl { font-size: 13px; font-weight: 700; }
+    .field { display: flex; align-items: center; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid #eef3ef; }
+    .field:last-child { border-bottom: none; }
+    .flabel { font-size: 13px; color: #4a6b4e; font-weight: 500; }
+    .fright { display: flex; align-items: center; gap: 6px; }
+    .field input { width: 86px; text-align: right; background: #f5f8f5; border: 1.5px solid #dde8de; color: #1a2e1c; font-size: 14px; font-weight: 600; border-radius: 10px; padding: 6px 10px; -webkit-appearance: none; appearance: none; font-family: inherit; }
+    .field input:focus { outline: none; border-color: #2d7a3a; background: #fff; }
+    .unit { font-size: 11px; color: #8fa894; font-weight: 500; min-width: 58px; }
+    .btn { width: 100%; padding: 15px; font-size: 15px; font-weight: 800; border: none; border-radius: 14px; cursor: pointer; margin-top: 6px; font-family: inherit; }
+    .btn-green { background: #2d7a3a; color: #fff; box-shadow: 0 4px 14px rgba(45,122,58,0.3); }
+    .btn-outline { background: #e8f5eb; color: #2d7a3a; border: 1.5px solid #b6debb; }
+    .btn-danger { background: #fdecea; color: #c62828; border: 1.5px solid #ffcdd2; }
+    .hero { background: linear-gradient(135deg, #2d7a3a, #1b4d23); border-radius: 16px; padding: 22px 20px; text-align: center; color: #fff; margin-bottom: 10px; box-shadow: 0 6px 24px rgba(45,122,58,0.25); }
+    .hero-lbl { font-size: 11px; font-weight: 600; opacity: 0.75; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+    .hero-val { font-size: 46px; font-weight: 800; letter-spacing: -1.5px; line-height: 1; }
+    .hero-sub { font-size: 12px; opacity: 0.65; margin-top: 8px; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+    .metric { background: #fff; border: 1px solid #dde8de; border-radius: 14px; padding: 14px; box-shadow: 0 1px 6px rgba(0,0,0,0.05); }
+    .metric-ico { font-size: 20px; margin-bottom: 6px; }
+    .metric-lbl { font-size: 10px; font-weight: 700; color: #8fa894; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+    .metric-val { font-size: 20px; font-weight: 800; }
+    .metric-sub { font-size: 10px; color: #8fa894; margin-top: 3px; }
+    .detail { background: #fff; border: 1px solid #dde8de; border-radius: 14px; padding: 2px 16px; margin-bottom: 10px; box-shadow: 0 1px 6px rgba(0,0,0,0.05); }
+    .drow { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; font-size: 13px; border-bottom: 1px solid #eef3ef; }
+    .drow:last-child { border-bottom: none; }
+    .dkey { color: #4a6b4e; font-weight: 500; }
+    .dval { font-weight: 700; }
+    .proj { background: #fff; border: 1px solid #dde8de; border-radius: 14px; overflow: hidden; margin-bottom: 10px; box-shadow: 0 1px 6px rgba(0,0,0,0.05); }
+    .prow { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; border-bottom: 1px solid #eef3ef; }
+    .prow:last-child { border-bottom: none; }
+    .plbl { font-size: 13px; color: #4a6b4e; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+    .pdot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+    .pval { font-size: 20px; font-weight: 800; }
+    .c-green { color: #2d7a3a; }
+    .c-red { color: #c62828; }
+    .c-amber { color: #d97706; }
+    .c-blue { color: #1565c0; }
+    .hist-hero { background: linear-gradient(135deg, #2d7a3a, #1b4d23); border-radius: 16px; padding: 18px 20px; color: #fff; margin: 16px 0 10px; box-shadow: 0 6px 24px rgba(45,122,58,0.25); }
+    .hh-lbl { font-size: 10px; opacity: 0.7; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; }
+    .hh-val { font-size: 34px; font-weight: 800; margin: 4px 0 2px; }
+    .hh-sub { font-size: 12px; opacity: 0.65; }
+    .hist-item { background: #fff; border: 1px solid #dde8de; border-radius: 12px; padding: 12px 16px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+    .hi-date { font-size: 13px; font-weight: 700; }
+    .hi-sub { font-size: 11px; color: #8fa894; margin-top: 2px; }
+    .hi-eco { font-size: 18px; font-weight: 800; }
+    .empty { text-align: center; padding: 50px 20px; color: #8fa894; font-size: 13px; }
+    .set-hero { background: #e8f5eb; border-radius: 14px; padding: 16px 18px; margin: 14px 0 4px; border: 1px solid #b6debb; }
+    .set-title { font-size: 18px; font-weight: 800; }
+    .set-sub { font-size: 12px; color: #4a6b4e; margin-top: 3px; }
+    .toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px); background: #1a2e1c; color: #fff; font-size: 13px; font-weight: 600; padding: 11px 22px; border-radius: 99px; transition: transform 0.35s; z-index: 999; white-space: nowrap; font-family: inherit; }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+<div class="header">
+  <div class="header-row">
+    <div class="app-title">Eco<span>Charge</span></div>
+    <span class="badge">T03 Edition</span>
+  </div>
+  <div class="car-banner">
+    <div>
+      <div class="car-brand">Leapmotor</div>
+      <div class="car-model">T03</div>
+      <div class="car-spec">Electrique &middot; 95 kW &middot; 265 km</div>
+    </div>
+    <svg width="130" height="62" viewBox="0 0 130 62" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="65" cy="59" rx="48" ry="3.5" fill="rgba(45,122,58,0.18)"/>
+      <path d="M16 46 L16 35 Q18 29 26 25 L40 19 Q50 15 65 15 Q80 15 90 19 L104 25 Q112 29 114 35 L114 46 Q114 51 110 52 L20 52 Q16 51 16 46Z" fill="#2d7a3a"/>
+      <path d="M38 25 Q48 16 65 15 Q82 15 92 25 L100 33 L30 33Z" fill="#1b4d23"/>
+      <path d="M42 25 Q51 18 65 17 Q79 18 88 25 L95 32 L35 32Z" fill="#a8ddb0" opacity="0.65"/>
+      <path d="M30 33 L35 32 L38 25 L36 26 Q28 29 26 34Z" fill="#a8ddb0" opacity="0.45"/>
+      <path d="M18 41 Q65 37 112 41" stroke="rgba(255,255,255,0.18)" stroke-width="1.5" fill="none"/>
+      <rect x="104" y="39" width="9" height="5" rx="1.5" fill="#0d3d17"/>
+      <rect x="106" y="41" width="5" height="2" rx="1" fill="#34c957"/>
+      <path d="M105 35 L114 37 L114 40 L105 38Z" fill="#fff9c4" opacity="0.9"/>
+      <path d="M25 35 L16 37 L16 40 L25 38Z" fill="#ff7070" opacity="0.85"/>
+      <path d="M50 33 L50 51" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+      <path d="M78 33 L78 51" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+      <rect x="54" y="40" width="10" height="2.5" rx="1.2" fill="rgba(255,255,255,0.35)"/>
+      <rect x="80" y="40" width="10" height="2.5" rx="1.2" fill="rgba(255,255,255,0.35)"/>
+      <ellipse cx="93" cy="53" rx="11" ry="7" fill="#1a1a1a"/>
+      <ellipse cx="93" cy="53" rx="8" ry="5" fill="#2e2e2e"/>
+      <ellipse cx="93" cy="53" rx="4.5" ry="3" fill="#444"/>
+      <ellipse cx="93" cy="53" rx="1.5" ry="1.2" fill="#777"/>
+      <ellipse cx="37" cy="53" rx="11" ry="7" fill="#1a1a1a"/>
+      <ellipse cx="37" cy="53" rx="8" ry="5" fill="#2e2e2e"/>
+      <ellipse cx="37" cy="53" rx="4.5" ry="3" fill="#444"/>
+      <ellipse cx="37" cy="53" rx="1.5" ry="1.2" fill="#777"/>
+      <rect x="61" y="17" width="8" height="7" rx="1.5" fill="rgba(255,255,255,0.18)"/>
+      <text x="65" y="23" text-anchor="middle" font-size="6.5" font-weight="bold" fill="white" font-family="Arial">L</text>
+    </svg>
+  </div>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('calcul')">Calcul</button>
+    <button class="tab" onclick="switchTab('historique')">Historique</button>
+    <button class="tab" onclick="switchTab('reglages')">Reglages</button>
+  </div>
+</div>
+
+<div class="content">
+  <div class="page active" id="page-calcul">
+    <div class="slabel">Trajet du jour</div>
+    <div class="card">
+      <div class="field">
+        <span class="flabel">Km parcourus</span>
+        <div class="fright"><input type="number" id="km" value="50" min="0" inputmode="decimal"><span class="unit">km</span></div>
+      </div>
+    </div>
+    <div class="slabel">Ancienne voiture</div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon" style="background:#fdecea;">&#9981;</div>
+        <span class="card-lbl" style="color:#c62828;">Thermique - Essence</span>
+      </div>
+      <div class="field">
+        <span class="flabel">Consommation</span>
+        <div class="fright"><input type="number" id="conso_ess" value="7" min="0" step="0.1" inputmode="decimal"><span class="unit">L/100km</span></div>
+      </div>
+      <div class="field">
+        <span class="flabel">Prix essence</span>
+        <div class="fright"><input type="number" id="prix_ess" value="1.85" min="0" step="0.01" inputmode="decimal"><span class="unit">EUR/L</span></div>
+      </div>
+    </div>
+    <div class="slabel">Leapmotor T03</div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon" style="background:#e8f5eb;">&#9889;</div>
+        <span class="card-lbl" style="color:#2d7a3a;">Electrique</span>
+      </div>
+      <div class="field">
+        <span class="flabel">Consommation</span>
+        <div class="fright"><input type="number" id="conso_elec" value="13.5" min="0" step="0.5" inputmode="decimal"><span class="unit">kWh/100km</span></div>
+      </div>
+      <div class="field">
+        <span class="flabel">Prix electricite</span>
+        <div class="fright"><input type="number" id="prix_elec" value="0.22" min="0" step="0.01" inputmode="decimal"><span class="unit">EUR/kWh</span></div>
+      </div>
+    </div>
+    <button class="btn btn-green" onclick="calculate()">Calculer mes economies</button>
+    <div id="results" style="display:none;">
+      <div class="slabel" style="margin-top:20px;">Economie du jour</div>
+      <div class="hero">
+        <div class="hero-lbl">Vous economisez</div>
+        <div class="hero-val" id="r_eco_big">-</div>
+        <div class="hero-sub" id="r_eco_sub">-</div>
+      </div>
+      <div class="grid2">
+        <div class="metric">
+          <div class="metric-ico">&#9981;</div>
+          <div class="metric-lbl">Cout essence</div>
+          <div class="metric-val c-red" id="r_th">-</div>
+          <div class="metric-sub">ancienne voiture</div>
+        </div>
+        <div class="metric">
+          <div class="metric-ico">&#9889;</div>
+          <div class="metric-lbl">Cout electrique</div>
+          <div class="metric-val c-blue" id="r_elec">-</div>
+          <div class="metric-sub">Leapmotor T03</div>
+        </div>
+      </div>
+      <div class="detail">
+        <div class="drow"><span class="dkey">Litres consommes</span><span class="dval c-red" id="r_litres">-</span></div>
+        <div class="drow"><span class="dkey">kWh consommes</span><span class="dval c-blue" id="r_kwh">-</span></div>
+        <div class="drow"><span class="dkey">CO2 evite</span><span class="dval c-green" id="r_co2">-</span></div>
+      </div>
+      <div class="slabel">Projections</div>
+      <div class="proj">
+        <div class="prow"><span class="plbl"><span class="pdot" style="background:#4caf63;"></span>7 jours</span><span class="pval c-green" id="p_7j">-</span></div>
+        <div class="prow"><span class="plbl"><span class="pdot" style="background:#d97706;"></span>1 mois</span><span class="pval c-amber" id="p_1m">-</span></div>
+        <div class="prow"><span class="plbl"><span class="pdot" style="background:#2d7a3a;"></span>1 an</span><span class="pval c-green" id="p_1a" style="font-size:22px;">-</span></div>
+      </div>
+      <button class="btn btn-outline" onclick="saveDay()">Sauvegarder ce trajet</button>
+    </div>
+  </div>
+
+  <div class="page" id="page-historique">
+    <div id="history-list"><div class="empty">Aucun trajet sauvegarde.<br>Calculez et sauvegardez votre premiere journee !</div></div>
+  </div>
+
+  <div class="page" id="page-reglages">
+    <div class="set-hero">
+      <div class="set-title">Reglages</div>
+      <div class="set-sub">Valeurs par defaut de vos vehicules</div>
+    </div>
+    <div class="slabel">Ancienne voiture</div>
+    <div class="card">
+      <div class="field"><span class="flabel">Conso. essence</span><div class="fright"><input type="number" id="s_ess" value="7" step="0.1" inputmode="decimal"><span class="unit">L/100km</span></div></div>
+      <div class="field"><span class="flabel">Prix essence</span><div class="fright"><input type="number" id="s_pess" value="1.85" step="0.01" inputmode="decimal"><span class="unit">EUR/L</span></div></div>
+    </div>
+    <div class="slabel">Leapmotor T03</div>
+    <div class="card">
+      <div class="field"><span class="flabel">Consommation</span><div class="fright"><input type="number" id="s_elec" value="13.5" step="0.5" inputmode="decimal"><span class="unit">kWh/100km</span></div></div>
+      <div class="field"><span class="flabel">Prix electricite</span><div class="fright"><input type="number" id="s_pelec" value="0.22" step="0.01" inputmode="decimal"><span class="unit">EUR/kWh</span></div></div>
+    </div>
+    <button class="btn btn-green" onclick="saveSettings()">Sauvegarder les reglages</button>
+    <div class="slabel" style="margin-top:24px;">Donnees</div>
+    <button class="btn btn-danger" onclick="clearHistory()">Effacer l historique</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var hist = JSON.parse(localStorage.getItem('ec_hist') || '[]');
+
+function switchTab(name) {
+  var names = ['calcul','historique','reglages'];
+  var tabs = document.querySelectorAll('.tab');
+  for (var i = 0; i < names.length; i++) {
+    var pg = document.getElementById('page-' + names[i]);
+    if (names[i] === name) {
+      pg.style.display = 'block';
+      tabs[i].className = 'tab active';
+    } else {
+      pg.style.display = 'none';
+      tabs[i].className = 'tab';
+    }
+  }
+  if (name === 'historique') renderHistory();
+  if (name === 'reglages') loadSettings();
+}
+
+function fmtE(v) {
+  return v.toFixed(2) + ' EUR';
+}
+function fmtS(v) {
+  return (v >= 0 ? '+' : '') + v.toFixed(2) + ' EUR';
+}
+
+function calculate() {
+  var km = parseFloat(document.getElementById('km').value) || 0;
+  var ce = parseFloat(document.getElementById('conso_ess').value) || 0;
+  var pe = parseFloat(document.getElementById('prix_ess').value) || 0;
+  var cel = parseFloat(document.getElementById('conso_elec').value) || 0;
+  var pel = parseFloat(document.getElementById('prix_elec').value) || 0;
+  var cout_th = (km / 100) * ce * pe;
+  var kwh = (km / 100) * cel;
+  var cout_el = kwh * pel;
+  var eco = cout_th - cout_el;
+  var litres = (km / 100) * ce;
+  var co2 = litres * 2.31 - kwh * 0.05;
+  if (co2 < 0) co2 = 0;
+  document.getElementById('r_eco_big').textContent = fmtS(eco);
+  document.getElementById('r_eco_sub').textContent = eco >= 0 ? 'vs ' + fmtE(cout_th) + ' avec essence' : 'T03 coute ' + Math.abs(eco).toFixed(2) + ' EUR de plus';
+  document.getElementById('r_th').textContent = fmtE(cout_th);
+  document.getElementById('r_elec').textContent = fmtE(cout_el);
+  document.getElementById('r_litres').textContent = litres.toFixed(2) + ' L';
+  document.getElementById('r_kwh').textContent = kwh.toFixed(1) + ' kWh';
+  document.getElementById('r_co2').textContent = co2.toFixed(2) + ' kg';
+  document.getElementById('p_7j').textContent = fmtS(eco * 7);
+  document.getElementById('p_1m').textContent = fmtS(eco * 30);
+  document.getElementById('p_1a').textContent = fmtS(eco * 365);
+  document.getElementById('results').style.display = 'block';
+  window._calc = { km: km, cout_th: cout_th, cout_el: cout_el, eco: eco, litres: litres, kwh: kwh, co2: co2 };
+}
+
+function saveDay() {
+  if (!window._calc) return;
+  var d = new Date();
+  var date = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
+  var entry = { date: date, km: window._calc.km, cout_th: window._calc.cout_th, cout_el: window._calc.cout_el, eco: window._calc.eco, litres: window._calc.litres, kwh: window._calc.kwh, co2: window._calc.co2 };
+  hist.unshift(entry);
+  if (hist.length > 90) hist = hist.slice(0, 90);
+  localStorage.setItem('ec_hist', JSON.stringify(hist));
+  showToast('Trajet sauvegarde !');
+}
+
+function renderHistory() {
+  var el = document.getElementById('history-list');
+  if (!hist.length) {
+    el.innerHTML = '<div class="empty">Aucun trajet sauvegarde.<br>Calculez et sauvegardez votre premiere journee !</div>';
+    return;
+  }
+  var tot = 0;
+  var totCo2 = 0;
+  for (var i = 0; i < hist.length; i++) {
+    tot += hist[i].eco || 0;
+    totCo2 += hist[i].co2 || 0;
+  }
+  var html = '<div class="hist-hero"><div class="hh-lbl">Total economise</div><div class="hh-val">' + fmtS(tot) + '</div><div class="hh-sub">' + totCo2.toFixed(1) + ' kg CO2 evites - ' + hist.length + ' trajet(s)</div></div>';
+  html += '<div class="slabel">Trajets recents</div>';
+  for (var j = 0; j < hist.length; j++) {
+    var h = hist[j];
+    var cls = h.eco >= 0 ? 'c-green' : 'c-red';
+    html += '<div class="hist-item"><div><div class="hi-date">' + h.date + '</div><div class="hi-sub">' + h.km + ' km</div></div><div class="hi-eco ' + cls + '">' + fmtS(h.eco) + '</div></div>';
+  }
+  el.innerHTML = html;
+}
+
+function loadSettings() {
+  var s = JSON.parse(localStorage.getItem('ec_settings') || '{}');
+  if (s.ess) document.getElementById('s_ess').value = s.ess;
+  if (s.pess) document.getElementById('s_pess').value = s.pess;
+  if (s.elec) document.getElementById('s_elec').value = s.elec;
+  if (s.pelec) document.getElementById('s_pelec').value = s.pelec;
+}
+
+function saveSettings() {
+  var s = { ess: document.getElementById('s_ess').value, pess: document.getElementById('s_pess').value, elec: document.getElementById('s_elec').value, pelec: document.getElementById('s_pelec').value };
+  localStorage.setItem('ec_settings', JSON.stringify(s));
+  document.getElementById('conso_ess').value = s.ess;
+  document.getElementById('prix_ess').value = s.pess;
+  document.getElementById('conso_elec').value = s.elec;
+  document.getElementById('prix_elec').value = s.pelec;
+  showToast('Reglages sauvegardes !');
+}
+
+function clearHistory() {
+  if (confirm('Effacer tout l historique ?')) {
+    hist = [];
+    localStorage.removeItem('ec_hist');
+    renderHistory();
+    showToast('Historique efface');
+  }
+}
+
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show';
+  setTimeout(function() { t.className = 'toast'; }, 2500);
+}
+
+document.getElementById('page-historique').style.display = 'none';
+document.getElementById('page-reglages').style.display = 'none';
+
+var initS = JSON.parse(localStorage.getItem('ec_settings') || '{}');
+if (initS.ess) document.getElementById('conso_ess').value = initS.ess;
+if (initS.pess) document.getElementById('prix_ess').value = initS.pess;
+if (initS.elec) document.getElementById('conso_elec').value = initS.elec;
+if (initS.pelec) document.getElementById('prix_elec').value = initS.pelec;
+</script>
+</body>
+</html>
