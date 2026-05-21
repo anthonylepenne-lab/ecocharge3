@@ -2,619 +2,251 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#1D5C43">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>EcoCharge T03</title>
+  <title>EcoCharge T03 - Pro</title>
   <style>
+    :root {
+      /* Professional Eco Palette */
+      --color-primary: #1D5C43; /* Forest Green */
+      --color-primary-light: #F0F5F2; /* Soft Green tint for backgrounds */
+      --color-primary-border: #C8DCD1; 
+      --color-accent: #DAAA00; /* Sophisticated Amber for medium results */
+      --color-text-main: #2D3748; /* Deep Charcoal */
+      --color-text-muted: #718096; /* Steel Grey */
+      --color-bg-app: #F7F5F2; /* Subtle Sand/Putty */
+      --color-danger: #A62A21; /* Professional Red */
+      --color-danger-light: #FFF5F4;
+      --color-white: #FFFFFF;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 12px rgba(29,92,67,0.08);
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif; background: #eef4fb; color: #0d2137; min-height: 100vh; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: var(--color-bg-app); color: var(--color-text-main); min-height: 100vh; -webkit-font-smoothing: antialiased; padding-bottom: env(safe-area-inset-bottom); }
     
-    /* Structure de l'en-tête améliorée */
-    .header { background: #fff; border-bottom: 1px solid #c8dff4; padding: 10px 16px 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,80,180,0.07); }
+    /* Global Container to allow for max-width on desktop */
+    .app-container { max-width: 500px; margin: 0 auto; min-height: 100vh; position: relative; }
+
+    /* --- Header & Navigation --- */
+    .header { background: var(--color-white); border-bottom: 1px solid var(--color-primary-border); padding: 16px 20px 0; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-sm); }
+    .header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .app-title { font-size: 22px; font-weight: 700; color: var(--color-primary); letter-spacing: -0.5px; }
+    .app-title span { color: var(--color-text-main); font-weight: 400; }
+    .badge { font-size: 11px; background: var(--color-primary-light); color: var(--color-primary); border: 1px solid var(--color-primary-border); padding: 4px 12px; border-radius: 99px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
     
-    /* Alignement des voitures et du titre */
-    .header-top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
-    .header-title-area { text-align: center; flex: 1; }
-    
-    /* Styles des illustrations SVG */
-    .car-mini-svg { width: 70px; height: auto; display: block; }
-    
-    .app-title { font-size: 20px; font-weight: 800; color: #0d2137; }
-    .app-title span { color: #1a6fc4; }
-    .badge { font-size: 11px; background: #e3f0ff; color: #1a6fc4; border: 1px solid #a8cff0; padding: 3px 10px; border-radius: 20px; font-weight: 600; display: inline-block; margin-top: 2px; }
-    
-    .car-banner { background: linear-gradient(135deg, #dceeff, #c4ddfa); border-radius: 14px; margin: 5px 0 10px; padding: 14px 16px; display: flex; align-items: center; justify-content: center; border: 1px solid #a8cff0; text-align: center; }
-    .car-brand { font-size: 10px; color: #1a6fc4; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
-    .car-model { font-size: 22px; font-weight: 800; color: #0d2137; }
-    .car-spec { font-size: 11px; color: #3a6080; margin-top: 2px; }
-    
-    .tabs { display: flex; gap: 3px; padding-bottom: 0; }
-    .tab { flex: 1; padding: 9px 2px; text-align: center; font-size: 11px; font-weight: 700; border-radius: 10px 10px 0 0; cursor: pointer; color: #7aa0c0; border: none; background: transparent; font-family: inherit; }
-    .tab.active { background: #eef4fb; color: #1a6fc4; border-bottom: 3px solid #1a6fc4; }
-    
-    .content { padding: 0 16px 32px; }
+    /* Car Banner - Environmental focus */
+    .car-banner { background: var(--color-primary); color: var(--color-white); border-radius: 12px; margin: 0 0 12px; padding: 18px; display: flex; align-items: center; justify-content: space-between; border: none; box-shadow: var(--shadow-md); position: relative; overflow: hidden;}
+    .car-banner::after { content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 60px; background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.04)" fill-opacity="1" d="M0,192L60,186.7C120,181,240,171,360,181.3C480,192,600,224,720,224C840,224,960,192,1080,165.3C1200,139,1320,117,1380,106.7L1440,96L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>') bottom; background-size: cover;}
+
+    .jeep-info { display: flex; flex-direction: column; align-items: flex-start; z-index: 1;}
+    .car-info { display: flex; flex-direction: column; align-items: flex-end; text-align: right; z-index: 1;}
+    .car-brand { font-size: 11px; color: rgba(255,255,255,0.7); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+    .car-model { font-size: 24px; font-weight: 800; color: var(--color-white); letter-spacing: -1px;}
+    .car-spec { font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 2px; }
+
+    /* SVG Vehicle styles */
+    .vehicle-svg { position: relative; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2)); z-index: 1;}
+
+    .tabs { display: flex; gap: 4px; padding-bottom: 0; }
+    .tab { flex: 1; padding: 12px 2px; text-align: center; font-size: 12px; font-weight: 600; border-radius: 8px 8px 0 0; cursor: pointer; color: var(--color-text-muted); border: none; background: transparent; font-family: inherit; transition: all 0.15s ease; }
+    .tab.active { background: var(--color-bg-app); color: var(--color-primary); border-bottom: 3px solid var(--color-primary); }
+
+    /* --- Content --- */
+    .content { padding: 8px 16px 40px; }
     .page { display: none; }
     .page.active { display: block; }
-    .slabel { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: #7aa0c0; text-transform: uppercase; margin: 16px 0 8px; }
-    .card { background: #fff; border: 1px solid #c8dff4; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; box-shadow: 0 1px 6px rgba(0,80,180,0.06); }
-    .card-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #e3f0ff; }
-    .card-icon { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
-    .card-lbl { font-size: 13px; font-weight: 700; }
-    .field { display: flex; align-items: center; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid #e3f0ff; }
+    
+    /* Section Labels */
+    .slabel { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--color-text-muted); text-transform: uppercase; margin: 20px 0 8px 4px; display: flex; align-items: center; gap: 6px;}
+    .slabel::before { content:''; display:inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--color-primary-border);}
+
+    /* Card Styling - Professional */
+    .card { background: var(--color-white); border: 1px solid var(--color-primary-border); border-radius: 12px; padding: 16px; margin-bottom: 12px; box-shadow: var(--shadow-sm); }
+    .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--color-primary-light); }
+    .card-icon { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--color-white); }
+    .card-lbl { font-size: 14px; font-weight: 700; color: var(--color-text-main);}
+    
+    /* Input Fields */
+    .field { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--color-primary-light); }
     .field:last-child { border-bottom: none; }
-    .flabel { font-size: 13px; color: #3a6080; font-weight: 500; }
-    .fright { display: flex; align-items: center; gap: 6px; }
-    .field input[type=number] { width: 86px; text-align: right; background: #eef4fb; border: 1.5px solid #c8dff4; color: #0d2137; font-size: 14px; font-weight: 600; border-radius: 10px; padding: 6px 10px; -webkit-appearance: none; appearance: none; font-family: inherit; }
-    .field input[type=date] { background: #eef4fb; border: 1.5px solid #c8dff4; color: #0d2137; font-size: 13px; font-weight: 600; border-radius: 10px; padding: 6px 10px; -webkit-appearance: none; appearance: none; font-family: inherit; }
-    .field input:focus { outline: none; border-color: #1a6fc4; background: #fff; }
-    .unit { font-size: 11px; color: #7aa0c0; font-weight: 500; min-width: 58px; }
-    .btn { width: 100%; padding: 15px; font-size: 15px; font-weight: 800; border: none; border-radius: 14px; cursor: pointer; margin-top: 6px; font-family: inherit; }
-    .btn-blue { background: #1a6fc4; color: #fff; box-shadow: 0 4px 14px rgba(26,111,196,0.3); }
-    .btn-blue:active { opacity: 0.88; }
-    .btn-outline { background: #e3f0ff; color: #1a6fc4; border: 1.5px solid #a8cff0; margin-top: 10px; }
-    .btn-danger { background: #fdecea; color: #c62828; border: 1.5px solid #ffcdd2; }
-    .hero { background: linear-gradient(135deg, #1a6fc4, #0d4a8a); border-radius: 16px; padding: 22px 20px; text-align: center; color: #fff; margin-bottom: 10px; box-shadow: 0 6px 24px rgba(26,111,196,0.28); }
-    .hero-lbl { font-size: 11px; font-weight: 600; opacity: 0.75; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
-    .hero-val { font-size: 42px; font-weight: 800; letter-spacing: -1.5px; line-height: 1; }
-    .hero-sub { font-size: 12px; opacity: 0.65; margin-top: 8px; }
-    .period-info { background: #e3f0ff; border: 1px solid #a8cff0; border-radius: 12px; padding: 12px 16px; margin-bottom: 10px; text-align: center; }
-    .period-info .pi-dates { font-size: 13px; font-weight: 700; color: #1a6fc4; }
-    .period-info .pi-days { font-size: 11px; color: #3a6080; margin-top: 3px; }
-    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
-    .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 10px; }
-    .metric { background: #fff; border: 1px solid #c8dff4; border-radius: 14px; padding: 14px; box-shadow: 0 1px 6px rgba(0,80,180,0.06); }
-    .metric-ico { font-size: 20px; margin-bottom: 6px; }
-    .metric-lbl { font-size: 10px; font-weight: 700; color: #7aa0c0; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
-    .metric-val { font-size: 18px; font-weight: 800; }
-    .metric-sub { font-size: 10px; color: #7aa0c0; margin-top: 3px; }
-    .detail { background: #fff; border: 1px solid #c8dff4; border-radius: 14px; padding: 2px 16px; margin-bottom: 10px; box-shadow: 0 1px 6px rgba(0,80,180,0.06); }
-    .drow { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; font-size: 13px; border-bottom: 1px solid #e3f0ff; }
+    .flabel { font-size: 14px; color: var(--color-text-main); font-weight: 500; }
+    .fright { display: flex; align-items: center; gap: 8px; }
+    
+    .field input[type=number], .field input[type=text] { width: 110px; text-align: right; background: var(--color-primary-light); border: 1px solid var(--color-primary-border); color: var(--color-text-main); font-size: 15px; font-weight: 600; border-radius: 8px; padding: 8px 12px; -webkit-appearance: none; appearance: none; font-family: inherit; transition: all 0.2s;}
+    .field input[type=text] { width: 160px; text-align: left; }
+    .field input[type=date] { background: var(--color-primary-light); border: 1px solid var(--color-primary-border); color: var(--color-text-main); font-size: 14px; font-weight: 600; border-radius: 8px; padding: 8px 12px; font-family: inherit; -webkit-appearance: none; }
+    .field input:focus { outline: none; border-color: var(--color-primary); background: var(--color-white); box-shadow: 0 0 0 3px rgba(29,92,67,0.1); }
+    .unit { font-size: 12px; color: var(--color-text-muted); font-weight: 500; min-width: 60px; }
+
+    /* Buttons */
+    .btn { width: 100%; padding: 16px; font-size: 16px; font-weight: 700; border: none; border-radius: 12px; cursor: pointer; margin-top: 8px; font-family: inherit; transition: all 0.2s ease; display: block; text-align: center; box-shadow: var(--shadow-sm);}
+    .btn-blue { background: var(--color-primary); color: var(--color-white); }
+    .btn-blue:hover { background: #134531; }
+    .btn-blue:active { background: #0b3021; transform: translateY(1px); box-shadow: none; }
+    
+    .btn-outline { background: var(--color-white); color: var(--color-primary); border: 1.5px solid var(--color-primary); margin-top: 16px; }
+    .btn-outline:active { background: var(--color-primary-light); }
+    
+    .btn-danger { background: var(--color-danger-light); color: var(--color-danger); border: 1px solid #FFCFCF; margin-top: 16px; }
+    .btn-danger:active { background: #FFE8E6; }
+
+    /* --- Results Styling --- */
+    .hero { background: var(--color-white); border: 2px solid var(--color-primary); border-radius: 16px; padding: 24px 20px; text-align: center; color: var(--color-primary); margin: 10px 0; box-shadow: var(--shadow-md); }
+    .hero-lbl { font-size: 12px; font-weight: 600; opacity: 0.8; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 8px; }
+    .hero-val { font-size: 48px; font-weight: 800; letter-spacing: -2px; line-height: 1; color: var(--color-text-main); }
+    .hero-sub { font-size: 13px; color: var(--color-text-muted); margin-top: 10px; }
+
+    .period-info { background: var(--color-primary-light); border: 1px solid var(--color-primary-border); border-radius: 10px; padding: 14px; margin-bottom: 12px; text-align: center; }
+    .period-info .pi-dates { font-size: 14px; font-weight: 700; color: var(--color-primary); }
+    .period-info .pi-days { font-size: 12px; color: var(--color-text-muted); margin-top: 3px; }
+
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+    
+    .metric { background: var(--color-white); border: 1px solid var(--color-primary-border); border-radius: 12px; padding: 16px; box-shadow: var(--shadow-sm); }
+    .metric-ico { font-size: 20px; margin-bottom: 8px; }
+    .metric-lbl { font-size: 11px; font-weight: 700; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 4px; }
+    .metric-val { font-size: 20px; font-weight: 800; color: var(--color-text-main); }
+    .metric-sub { font-size: 11px; color: var(--color-text-muted); margin-top: 3px; }
+
+    .detail { background: var(--color-white); border: 1px solid var(--color-primary-border); border-radius: 12px; padding: 4px 16px; margin-bottom: 12px; box-shadow: var(--shadow-sm); }
+    .drow { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; font-size: 14px; border-bottom: 1px solid var(--color-primary-light); }
     .drow:last-child { border-bottom: none; }
-    .dkey { color: #3a6080; font-weight: 500; }
-    .dval { font-weight: 700; }
-    .proj { background: #fff; border: 1px solid #c8dff4; border-radius: 14px; overflow: hidden; margin-bottom: 10px; box-shadow: 0 1px 6px rgba(0,80,180,0.06); }
-    .prow { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; border-bottom: 1px solid #e3f0ff; }
+    .dkey { color: var(--color-text-muted); font-weight: 500; }
+    .dval { font-weight: 700; color: var(--color-text-main); }
+    
+    /* Projections */
+    .proj { background: var(--color-white); border: 1px solid var(--color-primary-border); border-radius: 12px; overflow: hidden; margin-bottom: 12px; box-shadow: var(--shadow-sm); }
+    .prow { display: flex; justify-content: space-between; align-items: center; padding: 16px; border-bottom: 1px solid var(--color-primary-light); }
     .prow:last-child { border-bottom: none; }
-    .plbl { font-size: 13px; color: #3a6080; font-weight: 600; display: flex; align-items: center; gap: 8px; }
-    .pdot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+    .plbl { font-size: 14px; color: var(--color-text-main); font-weight: 600; display: flex; align-items: center; gap: 10px; }
+    .pdot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
     .pval { font-size: 20px; font-weight: 800; }
-    .chart-wrap { background: #fff; border: 1px solid #c8dff4; border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; box-shadow: 0 1px 6px rgba(0,80,180,0.06); }
-    .chart-title { font-size: 12px; font-weight: 700; color: #3a6080; margin-bottom: 12px; }
-    .bar-chart { display: flex; align-items: flex-end; gap: 6px; height: 80px; }
-    .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; }
-    .bar { width: 100%; border-radius: 6px 6px 0 0; transition: height 0.4s; min-height: 4px; }
-    .bar-lbl { font-size: 9px; color: #7aa0c0; font-weight: 600; text-align: center; }
-    .bar-val { font-size: 9px; font-weight: 700; text-align: center; }
-    .c-blue { color: #1a6fc4; }
-    .c-red { color: #c62828; }
-    .c-green { color: #2d7a3a; }
-    .c-amber { color: #d97706; }
-    .hist-hero { background: linear-gradient(135deg, #1a6fc4, #0d4a8a); border-radius: 16px; padding: 18px 20px; color: #fff; margin: 16px 0 10px; box-shadow: 0 6px 24px rgba(26,111,196,0.28); }
-    .hh-lbl { font-size: 10px; opacity: 0.7; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; }
-    .hh-val { font-size: 34px; font-weight: 800; margin: 4px 0 2px; }
-    .hh-sub { font-size: 12px; opacity: 0.65; }
-    .hist-item { background: #fff; border: 1px solid #c8dff4; border-radius: 12px; padding: 12px 16px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 4px rgba(0,80,180,0.05); }
-    .hi-date { font-size: 13px; font-weight: 700; }
-    .hi-sub { font-size: 11px; color: #7aa0c0; margin-top: 2px; }
-    .hi-eco { font-size: 18px; font-weight: 800; }
-    .empty { text-align: center; padding: 50px 20px; color: #7aa0c0; font-size: 13px; }
-    .set-hero { background: #e3f0ff; border-radius: 14px; padding: 16px 18px; margin: 14px 0 4px; border: 1px solid #a8cff0; }
-    .set-title { font-size: 18px; font-weight: 800; }
-    .set-sub { font-size: 12px; color: #3a6080; margin-top: 3px; }
-    .toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px); background: #0d2137; color: #fff; font-size: 13px; font-weight: 600; padding: 11px 22px; border-radius: 99px; transition: transform 0.35s; z-index: 999; white-space: nowrap; font-family: inherit; }
+
+    /* Chart */
+    .chart-wrap { background: var(--color-white); border: 1px solid var(--color-primary-border); border-radius: 12px; padding: 16px; margin-bottom: 12px; box-shadow: var(--shadow-sm); }
+    .chart-title { font-size: 13px; font-weight: 700; color: var(--color-text-main); margin-bottom: 16px; text-align: center;}
+    .bar-chart { display: flex; align-items: flex-end; gap: 12px; height: 100px; padding: 0 10px;}
+    .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .bar { width: 100%; border-radius: 6px 6px 0 0; transition: height 0.4s ease-out; min-height: 8px; max-width: 60px;}
+    .bar-lbl { font-size: 10px; color: var(--color-text-muted); font-weight: 600; text-align: center; margin-top: 4px;}
+    .bar-val { font-size: 10px; font-weight: 700; text-align: center; }
+
+    /* State colors */
+    .bg-ess { background-color: var(--color-danger) !important; }
+    .bg-elec { background-color: var(--color-primary) !important; }
+    .c-ess { color: var(--color-danger); }
+    .c-elec { color: var(--color-primary); }
+    .c-green { color: #2D8A3F; }
+    .c-amber { color: var(--color-accent); }
+
+    /* --- History & Settings --- */
+    .hist-hero { background: var(--color-white); border: 1px solid var(--color-primary-border); border-radius: 16px; padding: 20px; color: var(--color-text-main); margin: 16px 0 12px; box-shadow: var(--shadow-md); text-align: center;}
+    .hh-lbl { font-size: 12px; color: var(--color-text-muted); letter-spacing: 0.05em; text-transform: uppercase; font-weight: 600; }
+    .hh-val { font-size: 38px; font-weight: 800; margin: 4px 0; color: var(--color-primary); letter-spacing: -1.5px;}
+    .hh-sub { font-size: 13px; color: var(--color-text-muted); }
+    
+    .hist-item { background: var(--color-white); border: 1px solid var(--color-primary-border); border-radius: 10px; padding: 14px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-sm); cursor: pointer; transition: background 0.1s; -webkit-user-select: none; user-select: none; }
+    .hist-item:active { background: var(--color-primary-light); }
+    .hi-left { display: flex; flex-direction: column; gap: 3px; }
+    .hi-date { font-size: 13px; font-weight: 500; color: var(--color-text-muted); }
+    .hi-title { font-size: 13px; color: var(--color-text-main); font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; }
+    .hi-sub { font-size: 11px; color: var(--color-text-muted); }
+    .hi-eco { font-size: 18px; font-weight: 800; color: var(--color-primary); text-align: right;}
+    .empty { text-align: center; padding: 60px 20px; color: var(--color-text-muted); font-size: 14px; line-height: 1.5;}
+
+    .set-hero { background: var(--color-white); border-left: 5px solid var(--color-accent); border-radius: 8px; padding: 16px; margin: 16px 0 6px; box-shadow: var(--shadow-sm); border-top: 1px solid var(--color-primary-border); border-right: 1px solid var(--color-primary-border); border-bottom: 1px solid var(--color-primary-border);}
+    .set-title { font-size: 18px; font-weight: 700; color: var(--color-text-main);}
+    .set-sub { font-size: 13px; color: var(--color-text-muted); margin-top: 3px; }
+
+    /* Toast */
+    .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(80px); background: rgba(13, 33, 55, 0.9); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); color: var(--color-white); font-size: 14px; font-weight: 600; padding: 12px 24px; border-radius: 99px; transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); z-index: 999; white-space: nowrap; font-family: inherit; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
     .toast.show { transform: translateX(-50%) translateY(0); }
-    .err { color: #c62828; font-size: 12px; padding: 6px 0; display: none; }
+    .err { color: var(--color-danger); font-size: 13px; padding: 10px 4px; display: none; font-weight: 500;}
+  
+    /* Icons overrides to be more professional */
+    .ico-ess { color: var(--color-white); background-color: var(--color-danger); border-radius: 6px; padding: 4px; font-size: 14px; font-style: normal;}
+    .ico-elec { color: var(--color-white); background-color: var(--color-primary); border-radius: 6px; padding: 4px; font-size: 14px; font-style: normal;}
   </style>
 </head>
 <body>
-<div class="header">
-  <div class="header-top-row">
-    <svg class="car-mini-svg" viewBox="0 0 130 65" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="65" cy="61" rx="55" ry="4" fill="rgba(0,0,0,0.15)"/>
-      <path d="M15 50 L15 38 Q15 30 25 28 L40 25 L90 25 L105 28 Q115 30 115 38 L115 50 Q115 53 110 54 L20 54 Q15 53 15 50Z" fill="#F0F0F0" stroke="#D0D0D0" stroke-width="1"/>
-      <path d="M42 25 L45 15 L85 15 L88 25Z" fill="#F8F8F8" stroke="#D0D0D0" stroke-width="1"/>
-      <rect x="48" y="18" width="34" height="6" fill="#A0C0E0" opacity="0.6"/>
-      <rect x="25" y="30" width="10" height="15" rx="1" fill="#404040"/>
-      <rect x="38" y="30" width="6" height="15" rx="1" fill="#404040"/>
-      <rect x="47" y="30" width="6" height="15" rx="1" fill="#404040"/>
-      <rect x="56" y="30" width="6" height="15" rx="1" fill="#404040"/>
-      <rect x="65" y="30" width="6" height="15" rx="1" fill="#404040"/>
-      <rect x="74" y="30" width="6" height="15" rx="1" fill="#404040"/>
-      <rect x="83" y="30" width="6" height="15" rx="1" fill="#404040"/>
-      <rect x="92" y="30" width="10" height="15" rx="1" fill="#404040"/>
-      <circle cx="28" cy="36" r="4" fill="#FFFFE0" opacity="0.9"/>
-      <circle cx="99" cy="36" r="4" fill="#FFFFE0" opacity="0.9"/>
-      <ellipse cx="32" cy="53" rx="12" ry="10" fill="#1A1A1A"/>
-      <ellipse cx="32" cy="53" rx="8" ry="6" fill="#333333"/>
-      <ellipse cx="98" cy="53" rx="12" ry="10" fill="#1A1A1A"/>
-      <ellipse cx="98" cy="53" rx="8" ry="6" fill="#333333"/>
-    </svg>
-    
-    <div class="header-title-area">
+<div class="app-container">
+  <div class="header">
+    <div class="header-row">
       <div class="app-title">Eco<span>Charge</span></div>
       <span class="badge">T03 Edition</span>
     </div>
-    
-    <svg class="car-mini-svg" viewBox="0 0 130 65" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="65" cy="61" rx="50" ry="3.5" fill="rgba(26,111,196,0.1)"/>
-      <path d="M18 50 L18 39 Q20 32 28 28 L40 22 Q50 18 65 18 Q80 18 90 22 L102 28 Q110 32 112 39 L112 50 Q112 55 108 56 L22 56 Q18 55 18 50Z" fill="#A8D4F8"/>
-      <path d="M40 22 Q48 16 65 15 Q82 16 90 22 L98 30 L32 30Z" fill="#0D4A8A"/>
-      <path d="M42 22 Q50 18 65 17 Q80 18 88 22 L94 28 L36 28Z" fill="#DCEEFF" opacity="0.7"/>
-      <rect x="102" y="43" width="9" height="5" rx="1" fill="#062D5A"/>
-      <circle cx="23" cy="38" r="4" fill="#FFF9C4" opacity="0.8"/>
-      <circle cx="107" cy="38" r="4" fill="#FFF9C4" opacity="0.8"/>
-      <ellipse cx="92" cy="55" rx="11" ry="8" fill="#1A1A1A"/>
-      <ellipse cx="92" cy="55" rx="7" ry="5" fill="#333"/>
-      <ellipse cx="38" cy="55" rx="11" ry="8" fill="#1A1A1A"/>
-      <ellipse cx="38" cy="55" rx="7" ry="5" fill="#333"/>
-    </svg>
-  </div>
-  
-  <div class="car-banner">
-    <div>
-      <div class="car-brand">Leapmotor</div>
-      <div class="car-model">T03</div>
-      <div class="car-spec">Electrique &middot; 95 kW &middot; 265 km</div>
+    <div class="car-banner">
+      <div class="jeep-info">
+        <svg class="vehicle-svg" width="60" height="30" viewBox="0 0 100 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 35 L15 15 Q18 10 25 10 L75 10 Q82 10 85 15 L90 35 Q92 40 90 42 L10 42 Q8 40 10 35Z" fill="#F0F0F0" stroke="#DDDDDD" stroke-width="1"/>
+          <path d="M22 13 L78 13 Q82 13 83 16 L88 33 Q89 36 86 36 L14 36 Q11 36 12 33 L17 16 Q18 13 22 13Z" fill="#333333"/>
+          <ellipse cx="25" cy="42" rx="10" ry="10" fill="#111111"/>
+          <ellipse cx="25" cy="42" rx="5" ry="5" fill="#333333"/>
+          <ellipse cx="75" cy="42" rx="10" ry="10" fill="#111111"/>
+          <ellipse cx="75" cy="42" rx="5" ry="5" fill="#333333"/>
+          <rect x="5" y="25" width="8" height="12" rx="1" fill="#FFFFFF" opacity="0.9"/>
+          <rect x="87" y="25" width="8" height="12" rx="1" fill="#FFFFFF" opacity="0.9"/>
+          <rect x="40" y="38" width="20" height="2" rx="1" fill="#DDDDDD"/>
+        </svg>
+        <div class="car-spec">VS Jeep Renegade (Thermique)</div>
+      </div>
+      
+      <div class="car-info">
+        <div class="car-brand">Leapmotor</div>
+        <div class="car-model">T03</div>
+        <div class="car-spec">Électrique &middot; 265 km (WLTP)</div>
+        <svg class="vehicle-svg" width="60" height="30" viewBox="0 0 130 62" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="65" cy="59" rx="48" ry="3.5" fill="rgba(0,0,0,0.15)"/>
+          <path d="M16 46 L16 35 Q18 29 26 25 L40 19 Q50 15 65 15 Q80 15 90 19 L104 25 Q112 29 114 35 L114 46 Q114 51 110 52 L20 52 Q16 51 16 46Z" fill="#F0F0F0" stroke="#DDDDDD" stroke-width="0.5"/>
+          <path d="M38 25 Q48 16 65 15 Q82 15 92 25 L100 33 L30 33Z" fill="#333333"/>
+          <path d="M105 35 L114 37 L114 40 L105 38Z" fill="#FFE082" opacity="0.9"/>
+          <path d="M25 35 L16 37 L16 40 L25 38Z" fill="#EF5350" opacity="0.85"/>
+          <ellipse cx="93" cy="53" rx="11" ry="7" fill="#1A1A1A"/>
+          <ellipse cx="93" cy="53" rx="4.5" ry="3" fill="#666666"/>
+          <ellipse cx="37" cy="53" rx="11" ry="7" fill="#1A1A1A"/>
+          <ellipse cx="37" cy="53" rx="4.5" ry="3" fill="#666666"/>
+        </svg>
+      </div>
+    </div>
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('calcul')">Calcul</button>
+      <button class="tab" onclick="switchTab('periode')">Période</button>
+      <button class="tab" onclick="switchTab('historique')">Historique</button>
+      <button class="tab" onclick="switchTab('reglages')">Réglages</button>
     </div>
   </div>
-  <div class="tabs">
-    <button class="tab active" onclick="switchTab('calcul')">Calcul</button>
-    <button class="tab" onclick="switchTab('periode')">Periode</button>
-    <button class="tab" onclick="switchTab('historique')">Historique</button>
-    <button class="tab" onclick="switchTab('reglages')">Reglages</button>
-  </div>
-</div>
 
-<div class="content">
-  <div class="page active" id="page-calcul">
-    <div class="slabel">Trajet du jour</div>
-    <div class="card">
-      <div class="field">
-        <span class="flabel">Km parcourus</span>
-        <div class="fright"><input type="number" id="km" value="50" min="0" inputmode="decimal"><span class="unit">km</span></div>
-      </div>
-    </div>
-    <div class="slabel">Ancienne voiture</div>
-    <div class="card">
-      <div class="card-head">
-        <div class="card-icon" style="background:#fdecea;">&#9981;</div>
-        <span class="card-lbl" style="color:#c62828;">Thermique - Essence</span>
-      </div>
-      <div class="field">
-        <span class="flabel">Consommation</span>
-        <div class="fright"><input type="number" id="conso_ess" value="7" min="0" step="0.1" inputmode="decimal"><span class="unit">L/100km</span></div>
-      </div>
-      <div class="field">
-        <span class="flabel">Prix essence</span>
-        <div class="fright"><input type="number" id="prix_ess" value="1.85" min="0" step="0.01" inputmode="decimal"><span class="unit">EUR/L</span></div>
-      </div>
-    </div>
-    <div class="slabel">Leapmotor T03</div>
-    <div class="card">
-      <div class="card-head">
-        <div class="card-icon" style="background:#e3f0ff;">&#9889;</div>
-        <span class="card-lbl" style="color:#1a6fc4;">Electrique</span>
-      </div>
-      <div class="field">
-        <span class="flabel">Consommation</span>
-        <div class="fright"><input type="number" id="conso_elec" value="13.5" min="0" step="0.5" inputmode="decimal"><span class="unit">kWh/100km</span></div>
-      </div>
-      <div class="field">
-        <span class="flabel">Prix electricite</span>
-        <div class="fright"><input type="number" id="prix_elec" value="0.22" min="0" step="0.01" inputmode="decimal"><span class="unit">EUR/kWh</span></div>
-      </div>
-    </div>
-    <button class="btn btn-blue" onclick="calculateDay()">Calculer mes economies</button>
-    <div id="results-day" style="display:none;">
-      <div class="slabel" style="margin-top:20px;">Economie du jour</div>
-      <div class="hero">
-        <div class="hero-lbl">Vous economisez</div>
-        <div class="hero-val" id="d_eco_big">-</div>
-        <div class="hero-sub" id="d_eco_sub">-</div>
-      </div>
-      <div class="grid2">
-        <div class="metric">
-          <div class="metric-ico">&#9981;</div>
-          <div class="metric-lbl">Cout essence</div>
-          <div class="metric-val c-red" id="d_th">-</div>
-          <div class="metric-sub">ancienne voiture</div>
+  <div class="content">
+
+    <div class="page active" id="page-calcul">
+      <div class="slabel">Trajet du jour</div>
+      <div class="card">
+        <div class="field">
+          <span class="flabel">Nom du trajet (optionnel)</span>
+          <div class="fright"><input type="text" id="km_name" placeholder="ex: Maison-Travail"></div>
         </div>
-        <div class="metric">
-          <div class="metric-ico">&#9889;</div>
-          <div class="metric-lbl">Cout electrique</div>
-          <div class="metric-val c-blue" id="d_elec">-</div>
-          <div class="metric-sub">Leapmotor T03</div>
+        <div class="field">
+          <span class="flabel">Distance parcourue</span>
+          <div class="fright"><input type="number" id="km" value="50" min="0" inputmode="decimal"><span class="unit">km</span></div>
         </div>
       </div>
-      <div class="detail">
-        <div class="drow"><span class="dkey">Litres consommes</span><span class="dval c-red" id="d_litres">-</span></div>
-        <div class="drow"><span class="dkey">kWh consommes</span><span class="dval c-blue" id="d_kwh">-</span></div>
-        <div class="drow"><span class="dkey">CO2 evite</span><span class="dval c-green" id="d_co2">-</span></div>
-      </div>
-      <div class="slabel">Projections</div>
-      <div class="proj">
-        <div class="prow"><span class="plbl"><span class="pdot" style="background:#4ca8e0;"></span>7 jours</span><span class="pval c-blue" id="d_7j">-</span></div>
-        <div class="prow"><span class="plbl"><span class="pdot" style="background:#d97706;"></span>1 mois</span><span class="pval c-amber" id="d_1m">-</span></div>
-        <div class="prow"><span class="plbl"><span class="pdot" style="background:#1a6fc4;"></span>1 an</span><span class="pval c-blue" id="d_1a" style="font-size:22px;">-</span></div>
-      </div>
-      <button class="btn btn-outline" onclick="saveDayEntry()">Sauvegarder ce trajet</button>
-    </div>
-  </div>
-
-  <div class="page" id="page-periode">
-    <div class="slabel">Periode</div>
-    <div class="card">
-      <div class="field">
-        <span class="flabel">Date de debut</span>
-        <div class="fright"><input type="date" id="p_date_debut"></div>
-      </div>
-      <div class="field">
-        <span class="flabel">Date de fin</span>
-        <div class="fright"><input type="date" id="p_date_fin"></div>
-      </div>
-      <div class="field">
-        <span class="flabel">Km totaux</span>
-        <div class="fright"><input type="number" id="p_km" value="0" min="0" inputmode="decimal"><span class="unit">km</span></div>
-      </div>
-      <div class="err" id="p_err">Veuillez remplir tous les champs correctement.</div>
-    </div>
-    <div class="slabel">Ancienne voiture</div>
-    <div class="card">
-      <div class="field">
-        <span class="flabel">Consommation</span>
-        <div class="fright"><input type="number" id="p_conso_ess" value="7" min="0" step="0.1" inputmode="decimal"><span class="unit">L/100km</span></div>
-      </div>
-      <div class="field">
-        <span class="flabel">Prix essence</span>
-        <div class="fright"><input type="number" id="p_prix_ess" value="1.85" min="0" step="0.01" inputmode="decimal"><span class="unit">EUR/L</span></div>
-      </div>
-    </div>
-    <div class="slabel">Leapmotor T03</div>
-    <div class="card">
-      <div class="field">
-        <span class="flabel">Consommation</span>
-        <div class="fright"><input type="number" id="p_conso_elec" value="13.5" min="0" step="0.5" inputmode="decimal"><span class="unit">kWh/100km</span></div>
-      </div>
-      <div class="field">
-        <span class="flabel">Prix electricite</span>
-        <div class="fright"><input type="number" id="p_prix_elec" value="0.22" min="0" step="0.01" inputmode="decimal"><span class="unit">EUR/kWh</span></div>
-      </div>
-    </div>
-    <button class="btn btn-blue" onclick="calculatePeriod()">Calculer la periode</button>
-    <div id="results-period" style="display:none;">
-      <div class="slabel" style="margin-top:20px;">Resultats</div>
-      <div class="period-info">
-        <div class="pi-dates" id="p_label_dates">-</div>
-        <div class="pi-days" id="p_label_days">-</div>
-      </div>
-      <div class="hero">
-        <div class="hero-lbl">Economie totale sur la periode</div>
-        <div class="hero-val" id="p_eco_big">-</div>
-        <div class="hero-sub" id="p_eco_sub">-</div>
-      </div>
-      <div class="grid3">
-        <div class="metric">
-          <div class="metric-lbl">Par jour</div>
-          <div class="metric-val c-blue" id="p_eco_jour">-</div>
-          <div class="metric-sub">moyenne</div>
+      <div class="slabel">Ancienne voiture</div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:var(--color-danger);"><i class="ico-ess">⛽</i></div>
+          <span class="card-lbl" style="color:var(--color-danger);">Thermique - Essence</span>
         </div>
-        <div class="metric">
-          <div class="metric-lbl">Par semaine</div>
-          <div class="metric-val c-blue" id="p_eco_sem">-</div>
-          <div class="metric-sub">moyenne</div>
+        <div class="field">
+          <span class="flabel">Consommation moyenne</span>
+          <div class="fright"><input type="number" id="conso_ess" value="7" min="0" step="0.1" inputmode="decimal"><span class="unit">L/100km</span></div>
         </div>
-        <div class="metric">
-          <div class="metric-lbl">Par mois</div>
-          <div class="metric-val c-amber" id="p_eco_mois">-</div>
-          <div class="metric-sub">moyenne</div>
+        <div class="field">
+          <span class="flabel">Prix du carburant</span>
+          <div class="fright"><input type="number" id="prix_ess" value="1.85" min="0" step="0.01" inputmode="decimal"><span class="unit">€/L</span></div>
         </div>
       </div>
-      <div class="detail">
-        <div class="drow"><span class="dkey">Km parcourus</span><span class="dval" id="p_r_km">-</span></div>
-        <div class="drow"><span class="dkey">Cout essence total</span><span class="dval c-red" id="p_r_th">-</span></div>
-        <div class="drow"><span class="dkey">Cout electrique total</span><span class="dval c-blue" id="p_r_elec">-</span></div>
-        <div class="drow"><span class="dkey">Litres economises</span><span class="dval c-green" id="p_r_litres">-</span></div>
-        <div class="drow"><span class="dkey">CO2 evite total</span><span class="dval c-green" id="p_r_co2">-</span></div>
-      </div>
-      <div class="slabel">Comparaison visuelle</div>
-      <div class="chart-wrap">
-        <div class="chart-title">Cout essence vs electrique (EUR)</div>
-        <div class="bar-chart" id="bar_chart"></div>
-      </div>
-      <div class="slabel">Projection annuelle</div>
-      <div class="proj">
-        <div class="prow"><span class="plbl"><span class="pdot" style="background:#1a6fc4;"></span>Economie annuelle estimee</span><span class="pval c-blue" id="p_eco_an" style="font-size:22px;">-</span></div>
-        <div class="prow"><span class="plbl"><span class="pdot" style="background:#2d7a3a;"></span>CO2 evite sur 1 an</span><span class="pval c-green" id="p_co2_an">-</span></div>
-      </div>
-      <button class="btn btn-outline" onclick="savePeriodEntry()">Sauvegarder cette période</button>
-    </div>
-  </div>
-
-  <div class="page" id="page-historique">
-    <div id="history-list"><div class="empty">Aucun trajet sauvegarde.<br>Utilisez l onglet Calcul pour commencer.</div></div>
-  </div>
-
-  <div class="page" id="page-reglages">
-    <div class="set-hero">
-      <div class="set-title">Reglages</div>
-      <div class="set-sub">Valeurs par defaut de vos vehicules</div>
-    </div>
-    <div class="slabel">Ancienne voiture</div>
-    <div class="card">
-      <div class="field"><span class="flabel">Conso. essence</span><div class="fright"><input type="number" id="s_ess" value="7" step="0.1" inputmode="decimal"><span class="unit">L/100km</span></div></div>
-      <div class="field"><span class="flabel">Prix essence</span><div class="fright"><input type="number" id="s_pess" value="1.85" step="0.01" inputmode="decimal"><span class="unit">EUR/L</span></div></div>
-    </div>
-    <div class="slabel">Leapmotor T03</div>
-    <div class="card">
-      <div class="field"><span class="flabel">Consommation</span><div class="fright"><input type="number" id="s_elec" value="13.5" step="0.5" inputmode="decimal"><span class="unit">kWh/100km</span></div></div>
-      <div class="field"><span class="flabel">Prix electricite</span><div class="fright"><input type="number" id="s_pelec" value="0.22" step="0.01" inputmode="decimal"><span class="unit">EUR/kWh</span></div></div>
-    </div>
-    <button class="btn btn-blue" onclick="saveSettings()">Sauvegarder les reglages</button>
-    <div class="slabel" style="margin-top:24px;">Donnees</div>
-    <button class="btn btn-danger" onclick="clearHistory()">Effacer l historique</button>
-  </div>
-
-</div>
-<div class="toast" id="toast"></div>
-
-<script>
-var hist = JSON.parse(localStorage.getItem('ec_hist') || '[]');
-
-function switchTab(name) {
-  var names = ['calcul','periode','historique','reglages'];
-  var tabs = document.querySelectorAll('.tab');
-  for (var i = 0; i < names.length; i++) {
-    var pg = document.getElementById('page-' + names[i]);
-    if (names[i] === name) {
-      pg.style.display = 'block';
-      tabs[i].className = 'tab active';
-    } else {
-      pg.style.display = 'none';
-      tabs[i].className = 'tab';
-    }
-  }
-  if (name === 'historique') renderHistory();
-  if (name === 'reglages') loadSettings();
-  if (name === 'periode') initDates();
-}
-
-function initDates() {
-  var today = new Date();
-  var firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
-  document.getElementById('p_date_debut').value = formatDateInput(firstDay);
-  document.getElementById('p_date_fin').value = formatDateInput(today);
-  syncPeriodSettings();
-}
-
-function formatDateInput(d) {
-  var y = d.getFullYear();
-  var m = d.getMonth() + 1;
-  var day = d.getDate();
-  return y + '-' + (m < 10 ? '0' + m : m) + '-' + (day < 10 ? '0' + day : day);
-}
-
-function formatDateFR(str) {
-  var parts = str.split('-');
-  return parts[2] + '/' + parts[1] + '/' + parts[0];
-}
-
-function syncPeriodSettings() {
-  var s = JSON.parse(localStorage.getItem('ec_settings') || '{}');
-  if (s.ess) document.getElementById('p_conso_ess').value = s.ess;
-  if (s.pess) document.getElementById('p_prix_ess').value = s.pess;
-  if (s.elec) document.getElementById('p_conso_elec').value = s.elec;
-  if (s.pelec) document.getElementById('p_prix_elec').value = s.pelec;
-}
-
-function fmtE(v) { return v.toFixed(2) + ' EUR'; }
-function fmtS(v) { return (v >= 0 ? '+' : '') + v.toFixed(2) + ' EUR'; }
-
-function calculateDay() {
-  var km = parseFloat(document.getElementById('km').value) || 0;
-  var ce = parseFloat(document.getElementById('conso_ess').value) || 0;
-  var pe = parseFloat(document.getElementById('prix_ess').value) || 0;
-  var cel = parseFloat(document.getElementById('conso_elec').value) || 0;
-  var pel = parseFloat(document.getElementById('prix_elec').value) || 0;
-  var cout_th = (km / 100) * ce * pe;
-  var kwh = (km / 100) * cel;
-  var cout_el = kwh * pel;
-  var eco = cout_th - cout_el;
-  var litres = (km / 100) * ce;
-  var co2 = litres * 2.31 - kwh * 0.05;
-  if (co2 < 0) co2 = 0;
-  document.getElementById('d_eco_big').textContent = fmtS(eco);
-  document.getElementById('d_eco_sub').textContent = eco >= 0 ? 'vs ' + fmtE(cout_th) + ' avec essence' : 'T03 coute ' + Math.abs(eco).toFixed(2) + ' EUR de plus';
-  document.getElementById('d_th').textContent = fmtE(cout_th);
-  document.getElementById('d_elec').textContent = fmtE(cout_el);
-  document.getElementById('d_litres').textContent = litres.toFixed(2) + ' L';
-  document.getElementById('d_kwh').textContent = kwh.toFixed(1) + ' kWh';
-  document.getElementById('d_co2').textContent = co2.toFixed(2) + ' kg';
-  document.getElementById('d_7j').textContent = fmtS(eco * 7);
-  document.getElementById('d_1m').textContent = fmtS(eco * 30);
-  document.getElementById('d_1a').textContent = fmtS(eco * 365);
-  document.getElementById('results-day').style.display = 'block';
-  window._calcDay = { type: 'day', km: km, cout_th: cout_th, cout_el: cout_el, eco: eco, litres: litres, kwh: kwh, co2: co2 };
-}
-
-function calculatePeriod() {
-  var deb = document.getElementById('p_date_debut').value;
-  var fin = document.getElementById('p_date_fin').value;
-  var km = parseFloat(document.getElementById('p_km').value) || 0;
-  var ce = parseFloat(document.getElementById('p_conso_ess').value) || 0;
-  var pe = parseFloat(document.getElementById('p_prix_ess').value) || 0;
-  var cel = parseFloat(document.getElementById('p_conso_elec').value) || 0;
-  var pel = parseFloat(document.getElementById('p_prix_elec').value) || 0;
-  var errEl = document.getElementById('p_err');
-  if (!deb || !fin || km <= 0 || new Date(fin) < new Date(deb)) {
-    errEl.style.display = 'block';
-    return;
-  }
-  errEl.style.display = 'none';
-  var msPerDay = 1000 * 60 * 60 * 24;
-  var nbJours = Math.round((new Date(fin) - new Date(deb)) / msPerDay) + 1;
-  var cout_th = (km / 100) * ce * pe;
-  var kwh = (km / 100) * cel;
-  var cout_el = kwh * pel;
-  var eco = cout_th - cout_el;
-  var litres = (km / 100) * ce;
-  var co2 = litres * 2.31 - kwh * 0.05;
-  if (co2 < 0) co2 = 0;
-  var ecoParJour = eco / nbJours;
-  var ecoParSem = ecoParJour * 7;
-  var ecoParMois = ecoParJour * 30;
-  var ecoAn = ecoParJour * 365;
-  var co2An = (co2 / nbJours) * 365;
-  document.getElementById('p_label_dates').textContent = formatDateFR(deb) + '  au  ' + formatDateFR(fin);
-  document.getElementById('p_label_days').textContent = nbJours + ' jours  |  ' + km + ' km parcourus';
-  document.getElementById('p_eco_big').textContent = fmtS(eco);
-  document.getElementById('p_eco_sub').textContent = eco >= 0 ? 'economises par rapport a l essence' : 'depenses supplementaires';
-  document.getElementById('p_eco_jour').textContent = fmtS(ecoParJour);
-  document.getElementById('p_eco_sem').textContent = fmtS(ecoParSem);
-  document.getElementById('p_eco_mois').textContent = fmtS(ecoParMois);
-  document.getElementById('p_r_km').textContent = km + ' km';
-  document.getElementById('p_r_th').textContent = fmtE(cout_th);
-  document.getElementById('p_r_elec').textContent = fmtE(cout_el);
-  document.getElementById('p_r_litres').textContent = litres.toFixed(1) + ' L';
-  document.getElementById('p_r_co2').textContent = co2.toFixed(1) + ' kg';
-  document.getElementById('p_eco_an').textContent = fmtS(ecoAn);
-  document.getElementById('p_co2_an').textContent = co2An.toFixed(0) + ' kg';
-  renderBarChart(cout_th, cout_el);
-  document.getElementById('results-period').style.display = 'block';
-  window._calcPeriod = { type: 'period', deb: deb, fin: fin, km: km, cout_th: cout_th, cout_el: cout_el, eco: eco, litres: litres, kwh: kwh, co2: co2 };
-}
-
-function renderBarChart(cout_th, cout_el) {
-  var max = Math.max(cout_th, cout_el, 0.01);
-  var h_th = Math.round((cout_th / max) * 70);
-  var h_el = Math.round((cout_el / max) * 70);
-  var chart = document.getElementById('bar_chart');
-  chart.innerHTML =
-    '<div class="bar-col">' +
-      '<div class="bar-val c-red">' + cout_th.toFixed(2) + '</div>' +
-      '<div class="bar" style="height:' + h_th + 'px; background:#e57373;"></div>' +
-      '<div class="bar-lbl">Essence</div>' +
-    '</div>' +
-    '<div class="bar-col">' +
-      '<div class="bar-val c-blue">' + cout_el.toFixed(2) + '</div>' +
-      '<div class="bar" style="height:' + h_el + 'px; background:#1a6fc4;"></div>' +
-      '<div class="bar-lbl">Electrique</div>' +
-    '</div>';
-}
-
-function saveDayEntry() {
-  if (!window._calcDay) return;
-  var d = new Date();
-  var date = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
-  hist.unshift({ type: 'day', date: date, km: window._calcDay.km, cout_th: window._calcDay.cout_th, cout_el: window._calcDay.cout_el, eco: window._calcDay.eco, litres: window._calcDay.litres, kwh: window._calcDay.kwh, co2: window._calcDay.co2 });
-  if (hist.length > 90) hist = hist.slice(0, 90);
-  localStorage.setItem('ec_hist', JSON.stringify(hist));
-  showToast('Trajet sauvegarde !');
-}
-
-function savePeriodEntry() {
-  if (!window._calcPeriod) return;
-  
-  // Anti-doublon : Vérifie si une période identique existe déjà
-  var exists = hist.some(function(item) {
-    return item.type === 'period' && 
-           item.deb === window._calcPeriod.deb && 
-           item.fin === window._calcPeriod.fin;
-  });
-  
-  if (exists) {
-    showToast('Erreur : Cette période existe déjà !');
-    return;
-  }
-  
-  var d = new Date();
-  var dateSauvegarde = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
-  
-  hist.unshift({
-    type: 'period',
-    date: dateSauvegarde,
-    deb: window._calcPeriod.deb,
-    fin: window._calcPeriod.fin,
-    km: window._calcPeriod.km,
-    cout_th: window._calcPeriod.cout_th,
-    cout_el: window._calcPeriod.cout_el,
-    eco: window._calcPeriod.eco,
-    litres: window._calcPeriod.litres,
-    kwh: window._calcPeriod.kwh,
-    co2: window._calcPeriod.co2
-  });
-  
-  if (hist.length > 90) hist = hist.slice(0, 90);
-  localStorage.setItem('ec_hist', JSON.stringify(hist));
-  showToast('Période sauvegardée !');
-}
-
-function renderHistory() {
-  var el = document.getElementById('history-list');
-  if (!hist.length) {
-    el.innerHTML = '<div class="empty">Aucun trajet sauvegarde.<br>Utilisez l onglet Calcul pour commencer.</div>';
-    return;
-  }
-  var tot = 0; var totCo2 = 0; var totKm = 0;
-  for (var i = 0; i < hist.length; i++) { tot += hist[i].eco || 0; totCo2 += hist[i].co2 || 0; totKm += hist[i].km || 0; }
-  var html = '<div class="hist-hero"><div class="hh-lbl">Total economise</div><div class="hh-val">' + fmtS(tot) + '</div><div class="hh-sub">' + totKm + ' km - ' + totCo2.toFixed(1) + ' kg CO2 evites - ' + hist.length + ' enregistrement(s)</div></div>';
-  html += '<div class="slabel">Enregistrements recents</div>';
-  for (var j = 0; j < hist.length; j++) {
-    var h = hist[j];
-    var cls = h.eco >= 0 ? 'c-blue' : 'c-red';
-    
-    // Détermination du libellé selon le type
-    var label = h.type === 'period' ? '🗓️ Période : ' + formatDateFR(h.deb) + ' au ' + formatDateFR(h.fin) : '🚗 Trajet : ' + h.date;
-    
-    html += '<div class="hist-item"><div><div class="hi-date">' + label + '</div><div class="hi-sub">' + h.km + ' km &middot; ' + (h.co2||0).toFixed(2) + ' kg CO2</div></div><div class="hi-eco ' + cls + '">' + fmtS(h.eco) + '</div></div>';
-  }
-  el.innerHTML = html;
-}
-
-function loadSettings() {
-  var s = JSON.parse(localStorage.getItem('ec_settings') || '{}');
-  if (s.ess) document.getElementById('s_ess').value = s.ess;
-  if (s.pess) document.getElementById('s_pess').value = s.pess;
-  if (s.elec) document.getElementById('s_elec').value = s.elec;
-  if (s.pelec) document.getElementById('s_pelec').value = s.pelec;
-}
-
-function saveSettings() {
-  var s = { ess: document.getElementById('s_ess').value, pess: document.getElementById('s_pess').value, elec: document.getElementById('s_elec').value, pelec: document.getElementById('s_pelec').value };
-  localStorage.setItem('ec_settings', JSON.stringify(s));
-  document.getElementById('conso_ess').value = s.ess;
-  document.getElementById('prix_ess').value = s.pess;
-  document.getElementById('conso_elec').value = s.elec;
-  document.getElementById('prix_elec').value = s.pelec;
-  showToast('Reglages sauvegardes !');
-}
-
-function clearHistory() {
-  if (confirm('Effacer tout l historique ?')) {
-    hist = [];
-    localStorage.removeItem('ec_hist');
-    renderHistory();
-    showToast('Historique efface');
-  }
-}
-
-function showToast(msg) {
-  var t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast show';
-  setTimeout(function() { t.className = 'toast'; }, 2500);
-}
-
-document.getElementById('page-periode').style.display = 'none';
-document.getElementById('page-historique').style.display = 'none';
-document.getElementById('page-reglages').style.display = 'none';
-
-var initS = JSON.parse(localStorage.getItem('ec_settings') || '{}');
-if (initS.ess) document.getElementById('conso_ess').value = initS.ess;
-if (initS.pess) document.getElementById('prix_ess').value = initS.pess;
-if (initS.elec) document.getElementById('conso_elec').value = initS.elec;
-if (initS.pelec) document.getElementById('prix_elec').value = initS.pelec;
-</script>
-</body>
-</html>
+      <div class="slabel">Leapmotor T0
