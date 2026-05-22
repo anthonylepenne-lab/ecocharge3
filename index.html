@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
@@ -125,7 +125,14 @@
     .hint{font-size:11px;color:#8aab90;text-align:center;padding:4px 0 2px;}
     .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:#0f1923;color:#fff;font-size:13px;font-weight:600;padding:11px 22px;border-radius:99px;transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1);z-index:999;white-space:nowrap;font-family:inherit;box-shadow:0 4px 20px rgba(0,0,0,0.2);}
     .toast.show{transform:translateX(-50%) translateY(0);}
-  </style>
+      .mode-toggle{display:flex;background:#f5faf5;border-radius:10px;padding:3px;gap:2px;border:1px solid #dce8de;}
+    .mode-btn{padding:5px 10px;font-size:11px;font-weight:700;border:none;border-radius:8px;cursor:pointer;background:transparent;color:#8aab90;font-family:inherit;transition:all 0.2s;white-space:nowrap;}
+    .mode-btn.active{background:#fff;color:#16a34a;box-shadow:0 1px 4px rgba(0,0,0,0.08);}
+    .odo-info{background:#f0faf0;border:1px solid #bbf7d0;border-radius:10px;padding:10px 14px;margin-top:6px;font-size:12px;color:#166534;line-height:1.6;}
+    .odo-info strong{font-size:16px;font-weight:800;display:block;margin-bottom:2px;}
+    .odo-saved{background:#f5faf5;border-radius:10px;padding:8px 12px;margin-top:6px;font-size:11px;color:#4a6b50;display:flex;justify-content:space-between;align-items:center;border:1px solid #dce8de;}
+    .odo-reset{font-size:11px;color:#dc2626;font-weight:700;cursor:pointer;padding:3px 8px;border-radius:6px;background:#fef2f2;border:1px solid #fecaca;}
+</style>
 </head>
 <body>
 <div class="header">
@@ -240,7 +247,33 @@
     <div class="slabel">Trajet du jour</div>
     <div class="card">
       <div class="field"><span class="flabel">Nom du trajet</span><div class="fright"><input type="text" id="km_name" placeholder="Maison-Travail"></div></div>
-      <div class="field"><span class="flabel">Km parcourus</span><div class="fright"><input type="number" id="km" value="50" min="0" inputmode="decimal"><span class="unit">km</span></div></div>
+      <div class="field">
+        <span class="flabel">Mode de saisie</span>
+        <div class="fright">
+          <div class="mode-toggle">
+            <button class="mode-btn active" id="btn_km" onclick="setMode('km')">Km directs</button>
+            <button class="mode-btn" id="btn_odo" onclick="setMode('odo')">Odometre</button>
+          </div>
+        </div>
+      </div>
+      <div id="block_km">
+        <div class="field"><span class="flabel">Km parcourus</span><div class="fright"><input type="number" id="km" value="50" min="0" inputmode="decimal"><span class="unit">km</span></div></div>
+      </div>
+      <div id="block_odo" style="display:none;">
+        <div class="field">
+          <span class="flabel">Releve actuel</span>
+          <div class="fright"><input type="number" id="odo_now" min="0" inputmode="decimal" placeholder="ex: 12480" oninput="updateOdo()"><span class="unit">km</span></div>
+        </div>
+        <div class="field">
+          <span class="flabel">Releve precedent</span>
+          <div class="fright"><input type="number" id="odo_prev" min="0" inputmode="decimal" placeholder="auto"><span class="unit">km</span></div>
+        </div>
+        <div id="odo_result" style="display:none;" class="odo-info"></div>
+        <div id="odo_saved_block" class="odo-saved" style="display:none;">
+          <span id="odo_saved_label">-</span>
+          <span class="odo-reset" onclick="resetOdo()">Reinitialiser</span>
+        </div>
+      </div>
     </div>
     <div class="slabel">Jeep Renegade</div>
     <div class="card">
@@ -480,6 +513,7 @@ function saveDayEntry(){
   hist.unshift({id:'id_'+Date.now()+'_'+Math.floor(Math.random()*1000),type:'day',date:ds,name:window._cd.name,km:window._cd.km,ce:window._cd.ce,pe:window._cd.pe,cel:window._cd.cel,pel:window._cd.pel,cout_th:window._cd.cout_th,cout_el:window._cd.cout_el,eco:window._cd.eco,litres:window._cd.litres,kwh:window._cd.kwh,co2:window._cd.co2});
   if(hist.length>90)hist=hist.slice(0,90);
   localStorage.setItem('ec_hist',JSON.stringify(hist));
+  saveOdoAfterCalc();
   document.getElementById('km_name').value='';showToast('Trajet sauvegarde !');
 }
 
@@ -621,11 +655,79 @@ function loadSettings(){var s=JSON.parse(localStorage.getItem('ec_settings')||'{
 function saveSettings(){var s={ess:document.getElementById('s_ess').value,pess:document.getElementById('s_pess').value,elec:document.getElementById('s_elec').value,pelec:document.getElementById('s_pelec').value};localStorage.setItem('ec_settings',JSON.stringify(s));document.getElementById('conso_ess').value=s.ess;document.getElementById('prix_ess').value=s.pess;document.getElementById('conso_elec').value=s.elec;document.getElementById('prix_elec').value=s.pelec;showToast('Reglages sauvegardes !');}
 function clearHistory(){if(confirm('Effacer tout l historique ?')){hist=[];localStorage.removeItem('ec_hist');renderHistory();showToast('Historique efface');}}
 function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.className='toast show';setTimeout(function(){t.className='toast';},2500);}
+function setMode(mode){
+  var isOdo = mode === 'odo';
+  document.getElementById('block_km').style.display = isOdo ? 'none' : 'block';
+  document.getElementById('block_odo').style.display = isOdo ? 'block' : 'none';
+  document.getElementById('btn_km').className = isOdo ? 'mode-btn' : 'mode-btn active';
+  document.getElementById('btn_odo').className = isOdo ? 'mode-btn active' : 'mode-btn';
+  localStorage.setItem('ec_mode', mode);
+  if(isOdo) loadOdoSaved();
+}
+
+function loadOdoSaved(){
+  var saved = localStorage.getItem('ec_odo_last');
+  var block = document.getElementById('odo_saved_block');
+  var prevInput = document.getElementById('odo_prev');
+  if(saved){
+    var s = JSON.parse(saved);
+    block.style.display = 'flex';
+    document.getElementById('odo_saved_label').textContent = 'Dernier releve sauvegarde : ' + s.val + ' km (' + s.date + ')';
+    prevInput.value = s.val;
+    updateOdo();
+  } else {
+    block.style.display = 'none';
+    prevInput.value = '';
+  }
+}
+
+function updateOdo(){
+  var now = parseFloat(document.getElementById('odo_now').value) || 0;
+  var prev = parseFloat(document.getElementById('odo_prev').value) || 0;
+  var res = document.getElementById('odo_result');
+  if(now > 0 && prev > 0 && now > prev){
+    var diff = now - prev;
+    res.style.display = 'block';
+    res.innerHTML = '<strong>' + diff.toFixed(0) + ' km parcourus</strong>' + now + ' - ' + prev + ' km = ' + diff.toFixed(0) + ' km calcules automatiquement';
+    document.getElementById('km').value = diff.toFixed(0);
+  } else if(now > 0 && prev > 0 && now <= prev){
+    res.style.display = 'block';
+    res.innerHTML = '<span style="color:#dc2626;">Le releve actuel doit etre superieur au precedent.</span>';
+  } else {
+    res.style.display = 'none';
+  }
+}
+
+function saveOdoAfterCalc(){
+  var mode = localStorage.getItem('ec_mode') || 'km';
+  if(mode === 'odo'){
+    var now = parseFloat(document.getElementById('odo_now').value) || 0;
+    if(now > 0){
+      var d = new Date();
+      var ds = pad(d.getDate()) + '/' + pad(d.getMonth()+1) + '/' + d.getFullYear();
+      localStorage.setItem('ec_odo_last', JSON.stringify({val: now, date: ds}));
+    }
+  }
+}
+
+function resetOdo(){
+  if(confirm('Reinitialiser le dernier releve odometre ?')){
+    localStorage.removeItem('ec_odo_last');
+    document.getElementById('odo_prev').value = '';
+    document.getElementById('odo_now').value = '';
+    document.getElementById('odo_result').style.display = 'none';
+    document.getElementById('odo_saved_block').style.display = 'none';
+    showToast('Odometre reinitialise !');
+  }
+}
+
 document.getElementById('page-periode').style.display='none';
 document.getElementById('page-roi').style.display='none';
 document.getElementById('page-historique').style.display='none';
 document.getElementById('page-reglages').style.display='none';
 var iS=JSON.parse(localStorage.getItem('ec_settings')||'{}');
+var savedMode=localStorage.getItem('ec_mode')||'km';
+if(savedMode==='odo'){setMode('odo');} else {setMode('km');}
 if(iS.ess)document.getElementById('conso_ess').value=iS.ess;
 if(iS.pess)document.getElementById('prix_ess').value=iS.pess;
 if(iS.elec)document.getElementById('conso_elec').value=iS.elec;
