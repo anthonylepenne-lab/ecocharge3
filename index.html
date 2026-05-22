@@ -2,251 +2,634 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="theme-color" content="#1D5C43">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#f2f6f3">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>EcoCharge T03 - Pro</title>
+  <title>EcoCharge T03</title>
   <style>
-    :root {
-      /* Professional Eco Palette */
-      --color-primary: #1D5C43; /* Forest Green */
-      --color-primary-light: #F0F5F2; /* Soft Green tint for backgrounds */
-      --color-primary-border: #C8DCD1; 
-      --color-accent: #DAAA00; /* Sophisticated Amber for medium results */
-      --color-text-main: #2D3748; /* Deep Charcoal */
-      --color-text-muted: #718096; /* Steel Grey */
-      --color-bg-app: #F7F5F2; /* Subtle Sand/Putty */
-      --color-danger: #A62A21; /* Professional Red */
-      --color-danger-light: #FFF5F4;
-      --color-white: #FFFFFF;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
-      --shadow-md: 0 4px 12px rgba(29,92,67,0.08);
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: var(--color-bg-app); color: var(--color-text-main); min-height: 100vh; -webkit-font-smoothing: antialiased; padding-bottom: env(safe-area-inset-bottom); }
-    
-    /* Global Container to allow for max-width on desktop */
-    .app-container { max-width: 500px; margin: 0 auto; min-height: 100vh; position: relative; }
-
-    /* --- Header & Navigation --- */
-    .header { background: var(--color-white); border-bottom: 1px solid var(--color-primary-border); padding: 16px 20px 0; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-sm); }
-    .header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-    .app-title { font-size: 22px; font-weight: 700; color: var(--color-primary); letter-spacing: -0.5px; }
-    .app-title span { color: var(--color-text-main); font-weight: 400; }
-    .badge { font-size: 11px; background: var(--color-primary-light); color: var(--color-primary); border: 1px solid var(--color-primary-border); padding: 4px 12px; border-radius: 99px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-    
-    /* Car Banner - Environmental focus */
-    .car-banner { background: var(--color-primary); color: var(--color-white); border-radius: 12px; margin: 0 0 12px; padding: 18px; display: flex; align-items: center; justify-content: space-between; border: none; box-shadow: var(--shadow-md); position: relative; overflow: hidden;}
-    .car-banner::after { content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 60px; background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.04)" fill-opacity="1" d="M0,192L60,186.7C120,181,240,171,360,181.3C480,192,600,224,720,224C840,224,960,192,1080,165.3C1200,139,1320,117,1380,106.7L1440,96L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>') bottom; background-size: cover;}
-
-    .jeep-info { display: flex; flex-direction: column; align-items: flex-start; z-index: 1;}
-    .car-info { display: flex; flex-direction: column; align-items: flex-end; text-align: right; z-index: 1;}
-    .car-brand { font-size: 11px; color: rgba(255,255,255,0.7); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
-    .car-model { font-size: 24px; font-weight: 800; color: var(--color-white); letter-spacing: -1px;}
-    .car-spec { font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 2px; }
-
-    /* SVG Vehicle styles */
-    .vehicle-svg { position: relative; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2)); z-index: 1;}
-
-    .tabs { display: flex; gap: 4px; padding-bottom: 0; }
-    .tab { flex: 1; padding: 12px 2px; text-align: center; font-size: 12px; font-weight: 600; border-radius: 8px 8px 0 0; cursor: pointer; color: var(--color-text-muted); border: none; background: transparent; font-family: inherit; transition: all 0.15s ease; }
-    .tab.active { background: var(--color-bg-app); color: var(--color-primary); border-bottom: 3px solid var(--color-primary); }
-
-    /* --- Content --- */
-    .content { padding: 8px 16px 40px; }
-    .page { display: none; }
-    .page.active { display: block; }
-    
-    /* Section Labels */
-    .slabel { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--color-text-muted); text-transform: uppercase; margin: 20px 0 8px 4px; display: flex; align-items: center; gap: 6px;}
-    .slabel::before { content:''; display:inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--color-primary-border);}
-
-    /* Card Styling - Professional */
-    .card { background: var(--color-white); border: 1px solid var(--color-primary-border); border-radius: 12px; padding: 16px; margin-bottom: 12px; box-shadow: var(--shadow-sm); }
-    .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--color-primary-light); }
-    .card-icon { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--color-white); }
-    .card-lbl { font-size: 14px; font-weight: 700; color: var(--color-text-main);}
-    
-    /* Input Fields */
-    .field { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--color-primary-light); }
-    .field:last-child { border-bottom: none; }
-    .flabel { font-size: 14px; color: var(--color-text-main); font-weight: 500; }
-    .fright { display: flex; align-items: center; gap: 8px; }
-    
-    .field input[type=number], .field input[type=text] { width: 110px; text-align: right; background: var(--color-primary-light); border: 1px solid var(--color-primary-border); color: var(--color-text-main); font-size: 15px; font-weight: 600; border-radius: 8px; padding: 8px 12px; -webkit-appearance: none; appearance: none; font-family: inherit; transition: all 0.2s;}
-    .field input[type=text] { width: 160px; text-align: left; }
-    .field input[type=date] { background: var(--color-primary-light); border: 1px solid var(--color-primary-border); color: var(--color-text-main); font-size: 14px; font-weight: 600; border-radius: 8px; padding: 8px 12px; font-family: inherit; -webkit-appearance: none; }
-    .field input:focus { outline: none; border-color: var(--color-primary); background: var(--color-white); box-shadow: 0 0 0 3px rgba(29,92,67,0.1); }
-    .unit { font-size: 12px; color: var(--color-text-muted); font-weight: 500; min-width: 60px; }
-
-    /* Buttons */
-    .btn { width: 100%; padding: 16px; font-size: 16px; font-weight: 700; border: none; border-radius: 12px; cursor: pointer; margin-top: 8px; font-family: inherit; transition: all 0.2s ease; display: block; text-align: center; box-shadow: var(--shadow-sm);}
-    .btn-blue { background: var(--color-primary); color: var(--color-white); }
-    .btn-blue:hover { background: #134531; }
-    .btn-blue:active { background: #0b3021; transform: translateY(1px); box-shadow: none; }
-    
-    .btn-outline { background: var(--color-white); color: var(--color-primary); border: 1.5px solid var(--color-primary); margin-top: 16px; }
-    .btn-outline:active { background: var(--color-primary-light); }
-    
-    .btn-danger { background: var(--color-danger-light); color: var(--color-danger); border: 1px solid #FFCFCF; margin-top: 16px; }
-    .btn-danger:active { background: #FFE8E6; }
-
-    /* --- Results Styling --- */
-    .hero { background: var(--color-white); border: 2px solid var(--color-primary); border-radius: 16px; padding: 24px 20px; text-align: center; color: var(--color-primary); margin: 10px 0; box-shadow: var(--shadow-md); }
-    .hero-lbl { font-size: 12px; font-weight: 600; opacity: 0.8; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 8px; }
-    .hero-val { font-size: 48px; font-weight: 800; letter-spacing: -2px; line-height: 1; color: var(--color-text-main); }
-    .hero-sub { font-size: 13px; color: var(--color-text-muted); margin-top: 10px; }
-
-    .period-info { background: var(--color-primary-light); border: 1px solid var(--color-primary-border); border-radius: 10px; padding: 14px; margin-bottom: 12px; text-align: center; }
-    .period-info .pi-dates { font-size: 14px; font-weight: 700; color: var(--color-primary); }
-    .period-info .pi-days { font-size: 12px; color: var(--color-text-muted); margin-top: 3px; }
-
-    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-    .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-    
-    .metric { background: var(--color-white); border: 1px solid var(--color-primary-border); border-radius: 12px; padding: 16px; box-shadow: var(--shadow-sm); }
-    .metric-ico { font-size: 20px; margin-bottom: 8px; }
-    .metric-lbl { font-size: 11px; font-weight: 700; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 4px; }
-    .metric-val { font-size: 20px; font-weight: 800; color: var(--color-text-main); }
-    .metric-sub { font-size: 11px; color: var(--color-text-muted); margin-top: 3px; }
-
-    .detail { background: var(--color-white); border: 1px solid var(--color-primary-border); border-radius: 12px; padding: 4px 16px; margin-bottom: 12px; box-shadow: var(--shadow-sm); }
-    .drow { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; font-size: 14px; border-bottom: 1px solid var(--color-primary-light); }
-    .drow:last-child { border-bottom: none; }
-    .dkey { color: var(--color-text-muted); font-weight: 500; }
-    .dval { font-weight: 700; color: var(--color-text-main); }
-    
-    /* Projections */
-    .proj { background: var(--color-white); border: 1px solid var(--color-primary-border); border-radius: 12px; overflow: hidden; margin-bottom: 12px; box-shadow: var(--shadow-sm); }
-    .prow { display: flex; justify-content: space-between; align-items: center; padding: 16px; border-bottom: 1px solid var(--color-primary-light); }
-    .prow:last-child { border-bottom: none; }
-    .plbl { font-size: 14px; color: var(--color-text-main); font-weight: 600; display: flex; align-items: center; gap: 10px; }
-    .pdot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
-    .pval { font-size: 20px; font-weight: 800; }
-
-    /* Chart */
-    .chart-wrap { background: var(--color-white); border: 1px solid var(--color-primary-border); border-radius: 12px; padding: 16px; margin-bottom: 12px; box-shadow: var(--shadow-sm); }
-    .chart-title { font-size: 13px; font-weight: 700; color: var(--color-text-main); margin-bottom: 16px; text-align: center;}
-    .bar-chart { display: flex; align-items: flex-end; gap: 12px; height: 100px; padding: 0 10px;}
-    .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
-    .bar { width: 100%; border-radius: 6px 6px 0 0; transition: height 0.4s ease-out; min-height: 8px; max-width: 60px;}
-    .bar-lbl { font-size: 10px; color: var(--color-text-muted); font-weight: 600; text-align: center; margin-top: 4px;}
-    .bar-val { font-size: 10px; font-weight: 700; text-align: center; }
-
-    /* State colors */
-    .bg-ess { background-color: var(--color-danger) !important; }
-    .bg-elec { background-color: var(--color-primary) !important; }
-    .c-ess { color: var(--color-danger); }
-    .c-elec { color: var(--color-primary); }
-    .c-green { color: #2D8A3F; }
-    .c-amber { color: var(--color-accent); }
-
-    /* --- History & Settings --- */
-    .hist-hero { background: var(--color-white); border: 1px solid var(--color-primary-border); border-radius: 16px; padding: 20px; color: var(--color-text-main); margin: 16px 0 12px; box-shadow: var(--shadow-md); text-align: center;}
-    .hh-lbl { font-size: 12px; color: var(--color-text-muted); letter-spacing: 0.05em; text-transform: uppercase; font-weight: 600; }
-    .hh-val { font-size: 38px; font-weight: 800; margin: 4px 0; color: var(--color-primary); letter-spacing: -1.5px;}
-    .hh-sub { font-size: 13px; color: var(--color-text-muted); }
-    
-    .hist-item { background: var(--color-white); border: 1px solid var(--color-primary-border); border-radius: 10px; padding: 14px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-sm); cursor: pointer; transition: background 0.1s; -webkit-user-select: none; user-select: none; }
-    .hist-item:active { background: var(--color-primary-light); }
-    .hi-left { display: flex; flex-direction: column; gap: 3px; }
-    .hi-date { font-size: 13px; font-weight: 500; color: var(--color-text-muted); }
-    .hi-title { font-size: 13px; color: var(--color-text-main); font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; }
-    .hi-sub { font-size: 11px; color: var(--color-text-muted); }
-    .hi-eco { font-size: 18px; font-weight: 800; color: var(--color-primary); text-align: right;}
-    .empty { text-align: center; padding: 60px 20px; color: var(--color-text-muted); font-size: 14px; line-height: 1.5;}
-
-    .set-hero { background: var(--color-white); border-left: 5px solid var(--color-accent); border-radius: 8px; padding: 16px; margin: 16px 0 6px; box-shadow: var(--shadow-sm); border-top: 1px solid var(--color-primary-border); border-right: 1px solid var(--color-primary-border); border-bottom: 1px solid var(--color-primary-border);}
-    .set-title { font-size: 18px; font-weight: 700; color: var(--color-text-main);}
-    .set-sub { font-size: 13px; color: var(--color-text-muted); margin-top: 3px; }
-
-    /* Toast */
-    .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(80px); background: rgba(13, 33, 55, 0.9); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); color: var(--color-white); font-size: 14px; font-weight: 600; padding: 12px 24px; border-radius: 99px; transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); z-index: 999; white-space: nowrap; font-family: inherit; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-    .toast.show { transform: translateX(-50%) translateY(0); }
-    .err { color: var(--color-danger); font-size: 13px; padding: 10px 4px; display: none; font-weight: 500;}
-  
-    /* Icons overrides to be more professional */
-    .ico-ess { color: var(--color-white); background-color: var(--color-danger); border-radius: 6px; padding: 4px; font-size: 14px; font-style: normal;}
-    .ico-elec { color: var(--color-white); background-color: var(--color-primary); border-radius: 6px; padding: 4px; font-size: 14px; font-style: normal;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f2f6f3;color:#0f1923;min-height:100vh;}
+    .header{background:#fff;border-bottom:1px solid #dce8de;padding:0 16px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.06);}
+    .header-top{display:flex;align-items:center;justify-content:space-between;padding:12px 0 8px;}
+    .app-title{font-size:19px;font-weight:800;color:#0f1923;letter-spacing:-0.5px;}
+    .app-title span{color:#16a34a;}
+    .eco-badge{display:flex;align-items:center;gap:5px;background:#f0faf0;border:1px solid #bbf7d0;border-radius:20px;padding:4px 10px;font-size:10px;font-weight:700;color:#16a34a;letter-spacing:0.06em;}
+    .eco-dot{width:6px;height:6px;border-radius:50%;background:#22c55e;animation:pulse 2s infinite;}
+    @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+    .cars-banner{display:flex;align-items:center;justify-content:space-between;padding:6px 0 2px;}
+    .car-side{display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;}
+    .car-tag{font-size:8px;font-weight:800;letter-spacing:0.07em;text-transform:uppercase;padding:2px 8px;border-radius:99px;}
+    .tag-old{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca;}
+    .tag-new{background:#f0faf0;color:#166534;border:1px solid #bbf7d0;}
+    .vs-center{display:flex;flex-direction:column;align-items:center;gap:1px;padding:0 6px;}
+    .vs-text{font-size:10px;font-weight:900;color:#c4d4c4;letter-spacing:0.1em;}
+    .tabs{display:flex;gap:2px;padding:6px 0 0;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+    .tabs::-webkit-scrollbar{display:none;}
+    .tab{flex:none;padding:8px 10px;text-align:center;font-size:10px;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;border-radius:8px 8px 0 0;cursor:pointer;color:#8aab90;border:none;background:transparent;font-family:inherit;white-space:nowrap;}
+    .tab.active{background:#f2f6f3;color:#16a34a;border-bottom:3px solid #16a34a;}
+    .content{padding:0 16px 56px;}
+    .page{display:none;}
+    .page.active{display:block;}
+    .slabel{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#8aab90;margin:18px 0 8px;}
+    .slabel::after{content:'';flex:1;height:1px;background:#dce8de;}
+    .card{background:#fff;border:1px solid #e2ede3;border-radius:16px;padding:14px 16px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,0.05);}
+    .card-head{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #f0f7f0;}
+    .card-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+    .card-lbl{font-size:13px;font-weight:700;}
+    .card-sub{font-size:11px;color:#8aab90;margin-top:1px;}
+    .field{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid #f5faf5;}
+    .field:last-child{border-bottom:none;}
+    .flabel{font-size:13px;color:#4a6b50;font-weight:500;padding-right:6px;}
+    .fright{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+    .field input[type=number],.field input[type=text]{width:96px;text-align:right;background:#f5faf5;border:1.5px solid #dce8de;color:#0f1923;font-size:14px;font-weight:700;border-radius:10px;padding:6px 10px;-webkit-appearance:none;appearance:none;font-family:inherit;}
+    .field input[type=text]{width:138px;text-align:left;font-weight:500;font-size:13px;}
+    .field input[type=date]{background:#f5faf5;border:1.5px solid #dce8de;color:#0f1923;font-size:13px;font-weight:600;border-radius:10px;padding:6px 10px;-webkit-appearance:none;appearance:none;font-family:inherit;}
+    .field input:focus{outline:none;border-color:#22c55e;background:#fff;}
+    .unit{font-size:11px;color:#8aab90;font-weight:600;min-width:52px;}
+    .btn{width:100%;padding:15px;font-size:14px;font-weight:800;border:none;border-radius:14px;cursor:pointer;margin-top:8px;font-family:inherit;letter-spacing:0.03em;transition:transform 0.1s,opacity 0.15s;}
+    .btn:active{transform:scale(0.98);opacity:0.9;}
+    .btn-green{background:#16a34a;color:#fff;box-shadow:0 4px 16px rgba(22,163,74,0.28);}
+    .btn-outline{background:#f0faf0;color:#166534;border:1.5px solid #bbf7d0;margin-top:12px;}
+    .btn-danger{background:#fff1f0;color:#b91c1c;border:1.5px solid #fecaca;}
+    .hero{background:linear-gradient(135deg,#166534,#16a34a);border-radius:18px;padding:22px 20px;text-align:center;color:#fff;margin-bottom:10px;position:relative;overflow:hidden;box-shadow:0 8px 32px rgba(22,163,74,0.2);}
+    .hero::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,0.06);}
+    .hero-lbl{font-size:10px;font-weight:700;opacity:0.7;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px;}
+    .hero-val{font-size:42px;font-weight:800;letter-spacing:-1.5px;line-height:1;color:#fff;}
+    .hero-val.neg{color:#fca5a5;}
+    .hero-sub{font-size:12px;opacity:0.6;margin-top:8px;}
+    .roi-hero{border-radius:18px;padding:22px 20px;text-align:center;color:#fff;margin-bottom:10px;position:relative;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.12);}
+    .roi-hero::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,0.06);}
+    .roi-hero.pos{background:linear-gradient(135deg,#166534,#16a34a);}
+    .roi-hero.neg{background:linear-gradient(135deg,#991b1b,#dc2626);}
+    .roi-hero.neu{background:linear-gradient(135deg,#92400e,#d97706);}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+    .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;}
+    .metric{background:#fff;border:1px solid #e2ede3;border-radius:14px;padding:13px 12px;box-shadow:0 1px 3px rgba(0,0,0,0.04);}
+    .metric-bar{height:3px;border-radius:99px;margin-bottom:10px;}
+    .metric-lbl{font-size:10px;font-weight:700;color:#8aab90;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:5px;}
+    .metric-val{font-size:18px;font-weight:800;line-height:1.1;}
+    .metric-sub{font-size:10px;color:#8aab90;margin-top:4px;}
+    .detail{background:#fff;border:1px solid #e2ede3;border-radius:16px;padding:2px 16px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,0.04);}
+    .drow{display:flex;justify-content:space-between;align-items:center;padding:11px 0;font-size:13px;border-bottom:1px solid #f5faf5;}
+    .drow:last-child{border-bottom:none;}
+    .dkey{color:#4a6b50;font-weight:500;}
+    .dval{font-weight:700;}
+    .proj{background:#fff;border:1px solid #e2ede3;border-radius:16px;overflow:hidden;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,0.04);}
+    .prow{display:flex;justify-content:space-between;align-items:center;padding:13px 16px;border-bottom:1px solid #f5faf5;}
+    .prow:last-child{border-bottom:none;}
+    .plbl{font-size:13px;color:#4a6b50;font-weight:600;display:flex;align-items:center;gap:8px;}
+    .pdot{width:7px;height:7px;border-radius:50%;display:inline-block;flex-shrink:0;}
+    .pval{font-size:20px;font-weight:800;}
+    .period-info{background:#f0faf0;border:1px solid #bbf7d0;border-radius:12px;padding:13px 16px;margin-bottom:10px;text-align:center;}
+    .pi-dates{font-size:14px;font-weight:700;color:#166534;}
+    .pi-days{font-size:11px;color:#4a6b50;margin-top:3px;font-weight:500;}
+    .chart-wrap{background:#fff;border:1px solid #e2ede3;border-radius:16px;padding:14px 16px;margin-bottom:10px;}
+    .chart-title{font-size:10px;font-weight:700;color:#8aab90;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:14px;}
+    .bar-chart{display:flex;align-items:flex-end;gap:20px;height:90px;justify-content:center;}
+    .bar-col{display:flex;flex-direction:column;align-items:center;gap:4px;width:80px;}
+    .bar{width:100%;border-radius:8px 8px 0 0;min-height:4px;}
+    .bar-lbl{font-size:10px;color:#8aab90;font-weight:600;}
+    .bar-val{font-size:11px;font-weight:800;}
+    .timeline{background:#fff;border:1px solid #e2ede3;border-radius:16px;padding:14px 16px;margin-bottom:10px;}
+    .tl-title{font-size:10px;font-weight:700;color:#8aab90;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;}
+    .tl-track{position:relative;height:8px;background:#e2ede3;border-radius:99px;margin:6px 0 14px;}
+    .tl-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#16a34a,#4ade80);transition:width 0.6s ease;}
+    .tl-labels{display:flex;justify-content:space-between;font-size:10px;color:#8aab90;font-weight:600;margin-bottom:10px;}
+    .tl-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f5faf5;font-size:12px;}
+    .tl-row:last-child{border-bottom:none;}
+    .tl-yr{font-weight:700;color:#0f1923;}
+    .tl-amt{font-weight:700;}
+    .hist-hero{background:linear-gradient(135deg,#166534,#16a34a);border-radius:18px;padding:20px;color:#fff;margin:16px 0 10px;box-shadow:0 8px 32px rgba(22,163,74,0.2);position:relative;overflow:hidden;}
+    .hist-hero::before{content:'';position:absolute;bottom:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,0.06);}
+    .hh-lbl{font-size:10px;opacity:0.7;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;margin-bottom:6px;}
+    .hh-val{font-size:32px;font-weight:800;letter-spacing:-1px;margin-bottom:4px;}
+    .hh-sub{font-size:11px;opacity:0.6;}
+    .hist-wrapper{position:relative;margin-bottom:8px;border-radius:14px;overflow:hidden;}
+    .hist-delete-bg{position:absolute;top:0;right:0;bottom:0;width:80px;background:#dc2626;display:flex;align-items:center;justify-content:center;border-radius:14px;}
+    .hist-delete-icon{color:#fff;font-size:22px;}
+    .hist-item{position:relative;background:#fff;border:1px solid #e2ede3;border-radius:14px;padding:13px 16px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,0.04);cursor:pointer;-webkit-user-select:none;user-select:none;will-change:transform;z-index:1;}
+    .hi-title{font-size:10px;color:#16a34a;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;}
+    .hi-date{font-size:12px;font-weight:600;color:#0f1923;}
+    .hi-sub{font-size:11px;color:#8aab90;margin-top:2px;}
+    .hi-eco{font-size:18px;font-weight:800;flex-shrink:0;margin-left:8px;}
+    .set-hero{background:linear-gradient(135deg,#166534,#16a34a);border-radius:16px;padding:18px 20px;margin:14px 0 4px;color:#fff;}
+    .set-title{font-size:18px;font-weight:800;}
+    .set-sub{font-size:12px;opacity:0.6;margin-top:4px;}
+    .info-box{background:#f0faf0;border:1px solid #bbf7d0;border-radius:12px;padding:10px 14px;margin-bottom:10px;font-size:12px;color:#166534;line-height:1.6;}
+    .c-green{color:#16a34a;}
+    .c-red{color:#dc2626;}
+    .c-amber{color:#d97706;}
+    .empty{text-align:center;padding:60px 20px;color:#8aab90;font-size:13px;line-height:1.7;}
+    .err{color:#dc2626;font-size:12px;padding:6px 0;display:none;}
+    .hint{font-size:11px;color:#8aab90;text-align:center;padding:4px 0 2px;}
+    .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:#0f1923;color:#fff;font-size:13px;font-weight:600;padding:11px 22px;border-radius:99px;transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1);z-index:999;white-space:nowrap;font-family:inherit;box-shadow:0 4px 20px rgba(0,0,0,0.2);}
+    .toast.show{transform:translateX(-50%) translateY(0);}
   </style>
 </head>
 <body>
-<div class="app-container">
-  <div class="header">
-    <div class="header-row">
-      <div class="app-title">Eco<span>Charge</span></div>
-      <span class="badge">T03 Edition</span>
+<div class="header">
+  <div class="header-top">
+    <div class="app-title">Eco<span>Charge</span></div>
+    <div class="eco-badge"><span class="eco-dot"></span>CO2 TRACKER</div>
+  </div>
+  <div class="cars-banner">
+    <!-- JEEP RENEGADE VUE DE FACE -->
+    <div class="car-side">
+      <svg width="92" height="70" viewBox="0 0 100 76" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="50" cy="73" rx="38" ry="3" fill="rgba(0,0,0,0.07)"/>
+        <rect x="18" y="4" width="64" height="10" rx="3" fill="#e0e0e0"/>
+        <path d="M18 14 L10 22" stroke="#d0d0d0" stroke-width="3" stroke-linecap="round"/>
+        <path d="M82 14 L90 22" stroke="#d0d0d0" stroke-width="3" stroke-linecap="round"/>
+        <rect x="8" y="22" width="84" height="36" rx="3" fill="#f0f0f0"/>
+        <rect x="8" y="22" width="4" height="36" rx="2" fill="#e0e0e0"/>
+        <rect x="88" y="22" width="4" height="36" rx="2" fill="#e0e0e0"/>
+        <rect x="16" y="6" width="68" height="18" rx="2" fill="#a8c8e0" opacity="0.8"/>
+        <path d="M20 8 L36 8 L33 22 L16 22Z" fill="white" opacity="0.15"/>
+        <path d="M20 23 L80 23" stroke="rgba(0,0,0,0.09)" stroke-width="1.5"/>
+        <path d="M8 22 L92 22" stroke="#d8d8d8" stroke-width="1.2"/>
+        <path d="M50 22 L50 30" stroke="#d4d4d4" stroke-width="1"/>
+        <!-- Round headlights Renegade -->
+        <circle cx="22" cy="34" r="10" fill="#2a2a2a"/>
+        <circle cx="22" cy="34" r="8" fill="#1a1a1a"/>
+        <circle cx="22" cy="34" r="5.5" fill="#f5f5e8"/>
+        <circle cx="22" cy="34" r="3.5" fill="#fffce0"/>
+        <circle cx="20" cy="32" r="1.2" fill="white" opacity="0.7"/>
+        <circle cx="22" cy="34" r="9" fill="none" stroke="#e8b400" stroke-width="1.5" opacity="0.8"/>
+        <circle cx="78" cy="34" r="10" fill="#2a2a2a"/>
+        <circle cx="78" cy="34" r="8" fill="#1a1a1a"/>
+        <circle cx="78" cy="34" r="5.5" fill="#f5f5e8"/>
+        <circle cx="78" cy="34" r="3.5" fill="#fffce0"/>
+        <circle cx="76" cy="32" r="1.2" fill="white" opacity="0.7"/>
+        <circle cx="78" cy="34" r="9" fill="none" stroke="#e8b400" stroke-width="1.5" opacity="0.8"/>
+        <!-- 7-slot grille -->
+        <rect x="33" y="25" width="34" height="18" rx="2" fill="#d8d8d8"/>
+        <rect x="34.5" y="26.5" width="3.5" height="14" rx="1.5" fill="#b5b5b5"/>
+        <rect x="39.5" y="26.5" width="3.5" height="14" rx="1.5" fill="#b5b5b5"/>
+        <rect x="44.5" y="26.5" width="3.5" height="14" rx="1.5" fill="#b5b5b5"/>
+        <rect x="49.5" y="26.5" width="3.5" height="14" rx="1.5" fill="#b5b5b5"/>
+        <rect x="54.5" y="26.5" width="3.5" height="14" rx="1.5" fill="#b5b5b5"/>
+        <rect x="59.5" y="26.5" width="3.5" height="14" rx="1.5" fill="#b5b5b5"/>
+        <rect x="64.5" y="26.5" width="3.5" height="14" rx="1.5" fill="#b5b5b5"/>
+        <!-- Bumper -->
+        <rect x="6" y="56" width="88" height="9" rx="3" fill="#d8d8d8"/>
+        <rect x="10" y="62" width="80" height="4" rx="2" fill="#c8c8c8"/>
+        <rect x="24" y="59" width="52" height="3" rx="1.5" fill="#c0c0c0"/>
+        <rect x="10" y="57" width="12" height="5" rx="2" fill="#fffce0" opacity="0.9"/>
+        <rect x="78" y="57" width="12" height="5" rx="2" fill="#fffce0" opacity="0.9"/>
+        <rect x="37" y="43" width="26" height="7" rx="1.5" fill="rgba(0,0,0,0.09)"/>
+        <text x="50" y="49" text-anchor="middle" font-size="5.5" font-weight="800" fill="#555" font-family="Arial">JEEP</text>
+        <!-- Wheels front face -->
+        <path d="M8 60 Q8 68 18 68 Q28 68 28 60" fill="#e0e0e0"/>
+        <path d="M72 60 Q72 68 82 68 Q92 68 92 60" fill="#e0e0e0"/>
+        <circle cx="18" cy="66" r="7" fill="#222"/>
+        <circle cx="18" cy="66" r="5" fill="#333"/>
+        <circle cx="18" cy="66" r="2.5" fill="#555"/>
+        <circle cx="82" cy="66" r="7" fill="#222"/>
+        <circle cx="82" cy="66" r="5" fill="#333"/>
+        <circle cx="82" cy="66" r="2.5" fill="#555"/>
+      </svg>
+      <div class="car-tag tag-old">Renegade</div>
     </div>
-    <div class="car-banner">
-      <div class="jeep-info">
-        <svg class="vehicle-svg" width="60" height="30" viewBox="0 0 100 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M10 35 L15 15 Q18 10 25 10 L75 10 Q82 10 85 15 L90 35 Q92 40 90 42 L10 42 Q8 40 10 35Z" fill="#F0F0F0" stroke="#DDDDDD" stroke-width="1"/>
-          <path d="M22 13 L78 13 Q82 13 83 16 L88 33 Q89 36 86 36 L14 36 Q11 36 12 33 L17 16 Q18 13 22 13Z" fill="#333333"/>
-          <ellipse cx="25" cy="42" rx="10" ry="10" fill="#111111"/>
-          <ellipse cx="25" cy="42" rx="5" ry="5" fill="#333333"/>
-          <ellipse cx="75" cy="42" rx="10" ry="10" fill="#111111"/>
-          <ellipse cx="75" cy="42" rx="5" ry="5" fill="#333333"/>
-          <rect x="5" y="25" width="8" height="12" rx="1" fill="#FFFFFF" opacity="0.9"/>
-          <rect x="87" y="25" width="8" height="12" rx="1" fill="#FFFFFF" opacity="0.9"/>
-          <rect x="40" y="38" width="20" height="2" rx="1" fill="#DDDDDD"/>
-        </svg>
-        <div class="car-spec">VS Jeep Renegade (Thermique)</div>
-      </div>
-      
-      <div class="car-info">
-        <div class="car-brand">Leapmotor</div>
-        <div class="car-model">T03</div>
-        <div class="car-spec">Électrique &middot; 265 km (WLTP)</div>
-        <svg class="vehicle-svg" width="60" height="30" viewBox="0 0 130 62" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="65" cy="59" rx="48" ry="3.5" fill="rgba(0,0,0,0.15)"/>
-          <path d="M16 46 L16 35 Q18 29 26 25 L40 19 Q50 15 65 15 Q80 15 90 19 L104 25 Q112 29 114 35 L114 46 Q114 51 110 52 L20 52 Q16 51 16 46Z" fill="#F0F0F0" stroke="#DDDDDD" stroke-width="0.5"/>
-          <path d="M38 25 Q48 16 65 15 Q82 15 92 25 L100 33 L30 33Z" fill="#333333"/>
-          <path d="M105 35 L114 37 L114 40 L105 38Z" fill="#FFE082" opacity="0.9"/>
-          <path d="M25 35 L16 37 L16 40 L25 38Z" fill="#EF5350" opacity="0.85"/>
-          <ellipse cx="93" cy="53" rx="11" ry="7" fill="#1A1A1A"/>
-          <ellipse cx="93" cy="53" rx="4.5" ry="3" fill="#666666"/>
-          <ellipse cx="37" cy="53" rx="11" ry="7" fill="#1A1A1A"/>
-          <ellipse cx="37" cy="53" rx="4.5" ry="3" fill="#666666"/>
-        </svg>
-      </div>
+    <div class="vs-center">
+      <div style="font-size:18px;">&#127807;</div>
+      <div class="vs-text">VS</div>
     </div>
-    <div class="tabs">
-      <button class="tab active" onclick="switchTab('calcul')">Calcul</button>
-      <button class="tab" onclick="switchTab('periode')">Période</button>
-      <button class="tab" onclick="switchTab('historique')">Historique</button>
-      <button class="tab" onclick="switchTab('reglages')">Réglages</button>
+    <!-- LEAPMOTOR T03 DE COTE -->
+    <div class="car-side">
+      <svg width="92" height="70" viewBox="0 0 120 62" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="60" cy="59" rx="48" ry="3" fill="rgba(22,163,74,0.12)"/>
+        <path d="M12 40 L12 30 Q14 24 22 21 L34 16 Q44 13 60 13 Q76 13 84 16 L96 21 Q104 25 106 30 L106 40 Q106 45 102 46 L18 46 Q14 45 12 40Z" fill="#1a6fc4"/>
+        <path d="M34 21 Q44 13 60 13 Q76 13 84 21 L92 29 L28 29Z" fill="#0d4a8a"/>
+        <path d="M38 21 Q46 14 60 13 Q74 14 82 21 L88 28 L32 28Z" fill="#90caf9" opacity="0.6"/>
+        <path d="M28 29 L32 28 L34 21 L30 22 Q22 25 20 30Z" fill="#90caf9" opacity="0.4"/>
+        <path d="M14 37 Q60 33 106 37" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" fill="none"/>
+        <rect x="97" y="35" width="8" height="5" rx="1.5" fill="#062d5a"/>
+        <rect x="98.5" y="36.5" width="5" height="2" rx="1" fill="#4ade80"/>
+        <path d="M98 31 L106 33 L106 36 L98 34Z" fill="#fff9c4" opacity="0.9"/>
+        <path d="M22 31 L12 33 L12 36 L22 34Z" fill="#ff7070" opacity="0.85"/>
+        <path d="M46 29 L46 45" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+        <path d="M72 29 L72 45" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+        <rect x="50" y="37" width="10" height="2" rx="1" fill="rgba(255,255,255,0.3)"/>
+        <rect x="74" y="37" width="10" height="2" rx="1" fill="rgba(255,255,255,0.3)"/>
+        <ellipse cx="85" cy="47" rx="10" ry="7" fill="#1a1a1a"/>
+        <ellipse cx="85" cy="47" rx="7" ry="5" fill="#2e2e2e"/>
+        <ellipse cx="85" cy="47" rx="4" ry="3" fill="#444"/>
+        <ellipse cx="34" cy="47" rx="10" ry="7" fill="#1a1a1a"/>
+        <ellipse cx="34" cy="47" rx="7" ry="5" fill="#2e2e2e"/>
+        <ellipse cx="34" cy="47" rx="4" ry="3" fill="#444"/>
+        <rect x="56" y="14" width="8" height="7" rx="1.5" fill="rgba(255,255,255,0.18)"/>
+        <text x="60" y="20" text-anchor="middle" font-size="6" font-weight="bold" fill="white" font-family="Arial">L</text>
+      </svg>
+      <div class="car-tag tag-new">T03</div>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('calcul')">Calcul</button>
+    <button class="tab" onclick="switchTab('periode')">Periode</button>
+    <button class="tab" onclick="switchTab('roi')">ROI</button>
+    <button class="tab" onclick="switchTab('historique')">Historique</button>
+    <button class="tab" onclick="switchTab('reglages')">Reglages</button>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- CALCUL -->
+  <div class="page active" id="page-calcul">
+    <div class="slabel">Trajet du jour</div>
+    <div class="card">
+      <div class="field"><span class="flabel">Nom du trajet</span><div class="fright"><input type="text" id="km_name" placeholder="Maison-Travail"></div></div>
+      <div class="field"><span class="flabel">Km parcourus</span><div class="fright"><input type="number" id="km" value="50" min="0" inputmode="decimal"><span class="unit">km</span></div></div>
+    </div>
+    <div class="slabel">Jeep Renegade</div>
+    <div class="card">
+      <div class="card-head"><div class="card-icon" style="background:#fef2f2;">&#9981;</div><div><div class="card-lbl" style="color:#b91c1c;">Thermique - Essence</div><div class="card-sub">Jeep Renegade</div></div></div>
+      <div class="field"><span class="flabel">Consommation</span><div class="fright"><input type="number" id="conso_ess" value="7" min="0" step="0.1" inputmode="decimal"><span class="unit">L/100km</span></div></div>
+      <div class="field"><span class="flabel">Prix essence</span><div class="fright"><input type="number" id="prix_ess" value="1.85" min="0" step="0.01" inputmode="decimal"><span class="unit">EUR/L</span></div></div>
+    </div>
+    <div class="slabel">Leapmotor T03</div>
+    <div class="card">
+      <div class="card-head"><div class="card-icon" style="background:#f0faf0;">&#9889;</div><div><div class="card-lbl" style="color:#166534;">Electrique</div><div class="card-sub">Leapmotor T03</div></div></div>
+      <div class="field"><span class="flabel">Consommation</span><div class="fright"><input type="number" id="conso_elec" value="13.5" min="0" step="0.5" inputmode="decimal"><span class="unit">kWh/100km</span></div></div>
+      <div class="field"><span class="flabel">Prix electricite</span><div class="fright"><input type="number" id="prix_elec" value="0.22" min="0" step="0.01" inputmode="decimal"><span class="unit">EUR/kWh</span></div></div>
+    </div>
+    <button class="btn btn-green" onclick="calculateDay()">Calculer mes economies</button>
+    <div id="results-day" style="display:none;">
+      <div class="slabel" style="margin-top:20px;">Economie du jour</div>
+      <div class="hero"><div class="hero-lbl">Vous economisez</div><div class="hero-val" id="d_eco_big">-</div><div class="hero-sub" id="d_eco_sub">-</div></div>
+      <div class="grid2">
+        <div class="metric"><div class="metric-bar" style="background:#fca5a5;"></div><div class="metric-lbl">Cout essence</div><div class="metric-val c-red" id="d_th">-</div><div class="metric-sub">Renegade</div></div>
+        <div class="metric"><div class="metric-bar" style="background:#86efac;"></div><div class="metric-lbl">Cout electrique</div><div class="metric-val c-green" id="d_elec">-</div><div class="metric-sub">T03</div></div>
+      </div>
+      <div class="detail">
+        <div class="drow"><span class="dkey">Litres consommes</span><span class="dval c-red" id="d_litres">-</span></div>
+        <div class="drow"><span class="dkey">kWh consommes</span><span class="dval c-green" id="d_kwh">-</span></div>
+        <div class="drow"><span class="dkey">CO2 evite</span><span class="dval c-green" id="d_co2">-</span></div>
+      </div>
+      <div class="slabel">Projections</div>
+      <div class="proj">
+        <div class="prow"><span class="plbl"><span class="pdot" style="background:#86efac;"></span>7 jours</span><span class="pval c-green" id="d_7j">-</span></div>
+        <div class="prow"><span class="plbl"><span class="pdot" style="background:#fcd34d;"></span>1 mois</span><span class="pval c-amber" id="d_1m">-</span></div>
+        <div class="prow"><span class="plbl"><span class="pdot" style="background:#16a34a;"></span>1 an</span><span class="pval c-green" id="d_1a" style="font-size:22px;">-</span></div>
+      </div>
+      <button class="btn btn-outline" onclick="saveDayEntry()">Sauvegarder ce trajet</button>
     </div>
   </div>
 
-  <div class="content">
+  <!-- PERIODE -->
+  <div class="page" id="page-periode">
+    <div class="slabel">Periode</div>
+    <div class="card">
+      <div class="field"><span class="flabel">Nom</span><div class="fright"><input type="text" id="p_name" placeholder="Mai 2025"></div></div>
+      <div class="field"><span class="flabel">Date de debut</span><div class="fright"><input type="date" id="p_date_debut"></div></div>
+      <div class="field"><span class="flabel">Date de fin</span><div class="fright"><input type="date" id="p_date_fin"></div></div>
+      <div class="field"><span class="flabel">Km totaux</span><div class="fright"><input type="number" id="p_km" value="0" min="0" inputmode="decimal"><span class="unit">km</span></div></div>
+      <div class="err" id="p_err">Veuillez remplir tous les champs correctement.</div>
+    </div>
+    <div class="slabel">Jeep Renegade</div>
+    <div class="card">
+      <div class="field"><span class="flabel">Consommation</span><div class="fright"><input type="number" id="p_conso_ess" value="7" min="0" step="0.1" inputmode="decimal"><span class="unit">L/100km</span></div></div>
+      <div class="field"><span class="flabel">Prix essence</span><div class="fright"><input type="number" id="p_prix_ess" value="1.85" min="0" step="0.01" inputmode="decimal"><span class="unit">EUR/L</span></div></div>
+    </div>
+    <div class="slabel">Leapmotor T03</div>
+    <div class="card">
+      <div class="field"><span class="flabel">Consommation</span><div class="fright"><input type="number" id="p_conso_elec" value="13.5" min="0" step="0.5" inputmode="decimal"><span class="unit">kWh/100km</span></div></div>
+      <div class="field"><span class="flabel">Prix electricite</span><div class="fright"><input type="number" id="p_prix_elec" value="0.22" min="0" step="0.01" inputmode="decimal"><span class="unit">EUR/kWh</span></div></div>
+    </div>
+    <button class="btn btn-green" onclick="calculatePeriod()">Calculer la periode</button>
+    <div id="results-period" style="display:none;">
+      <div class="slabel" style="margin-top:20px;">Resultats</div>
+      <div class="period-info"><div class="pi-dates" id="p_label_dates">-</div><div class="pi-days" id="p_label_days">-</div></div>
+      <div class="hero"><div class="hero-lbl">Economie totale</div><div class="hero-val" id="p_eco_big">-</div><div class="hero-sub" id="p_eco_sub">-</div></div>
+      <div class="grid3">
+        <div class="metric"><div class="metric-bar" style="background:#86efac;"></div><div class="metric-lbl">Par jour</div><div class="metric-val c-green" id="p_eco_jour">-</div><div class="metric-sub">moy.</div></div>
+        <div class="metric"><div class="metric-bar" style="background:#86efac;"></div><div class="metric-lbl">Par semaine</div><div class="metric-val c-green" id="p_eco_sem">-</div><div class="metric-sub">moy.</div></div>
+        <div class="metric"><div class="metric-bar" style="background:#fcd34d;"></div><div class="metric-lbl">Par mois</div><div class="metric-val c-amber" id="p_eco_mois">-</div><div class="metric-sub">moy.</div></div>
+      </div>
+      <div class="detail">
+        <div class="drow"><span class="dkey">Km parcourus</span><span class="dval" id="p_r_km">-</span></div>
+        <div class="drow"><span class="dkey">Cout essence total</span><span class="dval c-red" id="p_r_th">-</span></div>
+        <div class="drow"><span class="dkey">Cout electrique total</span><span class="dval c-green" id="p_r_elec">-</span></div>
+        <div class="drow"><span class="dkey">Litres economises</span><span class="dval c-green" id="p_r_litres">-</span></div>
+        <div class="drow"><span class="dkey">CO2 evite total</span><span class="dval c-green" id="p_r_co2">-</span></div>
+      </div>
+      <div class="slabel">Comparaison</div>
+      <div class="chart-wrap"><div class="chart-title">Cout essence vs electrique (EUR)</div><div class="bar-chart" id="bar_chart"></div></div>
+      <div class="slabel">Projection annuelle</div>
+      <div class="proj">
+        <div class="prow"><span class="plbl"><span class="pdot" style="background:#16a34a;"></span>Economie annuelle estimee</span><span class="pval c-green" id="p_eco_an" style="font-size:22px;">-</span></div>
+        <div class="prow"><span class="plbl"><span class="pdot" style="background:#86efac;"></span>CO2 evite sur 1 an</span><span class="pval c-green" id="p_co2_an">-</span></div>
+      </div>
+      <button class="btn btn-outline" onclick="savePeriodEntry()">Sauvegarder cette periode</button>
+    </div>
+  </div>
 
-    <div class="page active" id="page-calcul">
-      <div class="slabel">Trajet du jour</div>
-      <div class="card">
-        <div class="field">
-          <span class="flabel">Nom du trajet (optionnel)</span>
-          <div class="fright"><input type="text" id="km_name" placeholder="ex: Maison-Travail"></div>
-        </div>
-        <div class="field">
-          <span class="flabel">Distance parcourue</span>
-          <div class="fright"><input type="number" id="km" value="50" min="0" inputmode="decimal"><span class="unit">km</span></div>
-        </div>
+  <!-- ROI -->
+  <div class="page" id="page-roi">
+    <div class="info-box">Comparez le cout total de possession des deux vehicules et calculez en combien de temps le T03 sera rentabilise.</div>
+    <div class="slabel">Achat</div>
+    <div class="card">
+      <div class="field"><span class="flabel">Prix achat T03</span><div class="fright"><input type="number" id="r_prix_t03" value="18000" min="0" step="100" inputmode="decimal"><span class="unit">EUR</span></div></div>
+      <div class="field"><span class="flabel">Bonus ecologique</span><div class="fright"><input type="number" id="r_bonus" value="4000" min="0" step="100" inputmode="decimal"><span class="unit">EUR</span></div></div>
+      <div class="field"><span class="flabel">Revente Renegade</span><div class="fright"><input type="number" id="r_revente" value="8000" min="0" step="100" inputmode="decimal"><span class="unit">EUR</span></div></div>
+    </div>
+    <div class="slabel">Entretien Renegade / an</div>
+    <div class="card">
+      <div class="card-head"><div class="card-icon" style="background:#fef2f2;">&#128295;</div><div><div class="card-lbl" style="color:#b91c1c;">Thermique</div></div></div>
+      <div class="field"><span class="flabel">Vidange + filtres</span><div class="fright"><input type="number" id="r_vidange" value="200" min="0" inputmode="decimal"><span class="unit">EUR/an</span></div></div>
+      <div class="field"><span class="flabel">Distribution</span><div class="fright"><input type="number" id="r_distribution" value="80" min="0" inputmode="decimal"><span class="unit">EUR/an</span></div></div>
+      <div class="field"><span class="flabel">Freins + pneus</span><div class="fright"><input type="number" id="r_freins_old" value="150" min="0" inputmode="decimal"><span class="unit">EUR/an</span></div></div>
+      <div class="field"><span class="flabel">Controle technique</span><div class="fright"><input type="number" id="r_ct_old" value="40" min="0" inputmode="decimal"><span class="unit">EUR/an</span></div></div>
+      <div class="field"><span class="flabel">Assurance</span><div class="fright"><input type="number" id="r_assurance_old" value="800" min="0" inputmode="decimal"><span class="unit">EUR/an</span></div></div>
+      <div class="field"><span class="flabel">Divers / imprevus</span><div class="fright"><input type="number" id="r_divers_old" value="200" min="0" inputmode="decimal"><span class="unit">EUR/an</span></div></div>
+    </div>
+    <div class="slabel">Entretien T03 / an</div>
+    <div class="card">
+      <div class="card-head"><div class="card-icon" style="background:#f0faf0;">&#9889;</div><div><div class="card-lbl" style="color:#166534;">Electrique</div></div></div>
+      <div class="field"><span class="flabel">Revision annuelle</span><div class="fright"><input type="number" id="r_revision_t03" value="80" min="0" inputmode="decimal"><span class="unit">EUR/an</span></div></div>
+      <div class="field"><span class="flabel">Freins + pneus</span><div class="fright"><input type="number" id="r_freins_new" value="100" min="0" inputmode="decimal"><span class="unit">EUR/an</span></div></div>
+      <div class="field"><span class="flabel">Controle technique</span><div class="fright"><input type="number" id="r_ct_new" value="40" min="0" inputmode="decimal"><span class="unit">EUR/an</span></div></div>
+      <div class="field"><span class="flabel">Assurance</span><div class="fright"><input type="number" id="r_assurance_new" value="600" min="0" inputmode="decimal"><span class="unit">EUR/an</span></div></div>
+      <div class="field"><span class="flabel">Divers / imprevus</span><div class="fright"><input type="number" id="r_divers_new" value="80" min="0" inputmode="decimal"><span class="unit">EUR/an</span></div></div>
+    </div>
+    <div class="slabel">Carburant / Energie</div>
+    <div class="card">
+      <div class="field"><span class="flabel">Km annuels estimes</span><div class="fright"><input type="number" id="r_km_an" value="15000" min="0" step="500" inputmode="decimal"><span class="unit">km/an</span></div></div>
+      <div class="field"><span class="flabel">Conso. Renegade</span><div class="fright"><input type="number" id="r_conso_ess" value="7" min="0" step="0.1" inputmode="decimal"><span class="unit">L/100km</span></div></div>
+      <div class="field"><span class="flabel">Prix essence</span><div class="fright"><input type="number" id="r_prix_ess" value="1.85" min="0" step="0.01" inputmode="decimal"><span class="unit">EUR/L</span></div></div>
+      <div class="field"><span class="flabel">Conso. T03</span><div class="fright"><input type="number" id="r_conso_elec" value="13.5" min="0" step="0.5" inputmode="decimal"><span class="unit">kWh/100</span></div></div>
+      <div class="field"><span class="flabel">Prix electricite</span><div class="fright"><input type="number" id="r_prix_elec" value="0.22" min="0" step="0.01" inputmode="decimal"><span class="unit">EUR/kWh</span></div></div>
+    </div>
+    <button class="btn btn-green" onclick="calculateROI()">Calculer le ROI</button>
+    <div id="results-roi" style="display:none;">
+      <div class="slabel" style="margin-top:20px;">Investissement net</div>
+      <div class="detail">
+        <div class="drow"><span class="dkey">Prix T03</span><span class="dval c-red" id="roi_prix_t03">-</span></div>
+        <div class="drow"><span class="dkey">- Bonus ecologique</span><span class="dval c-green" id="roi_bonus">-</span></div>
+        <div class="drow"><span class="dkey">- Revente Renegade</span><span class="dval c-green" id="roi_revente">-</span></div>
+        <div class="drow"><span class="dkey" style="font-weight:700;color:#0f1923;">Investissement net</span><span class="dval" id="roi_diff_achat">-</span></div>
       </div>
-      <div class="slabel">Ancienne voiture</div>
-      <div class="card">
-        <div class="card-head">
-          <div class="card-icon" style="background:var(--color-danger);"><i class="ico-ess">⛽</i></div>
-          <span class="card-lbl" style="color:var(--color-danger);">Thermique - Essence</span>
-        </div>
-        <div class="field">
-          <span class="flabel">Consommation moyenne</span>
-          <div class="fright"><input type="number" id="conso_ess" value="7" min="0" step="0.1" inputmode="decimal"><span class="unit">L/100km</span></div>
-        </div>
-        <div class="field">
-          <span class="flabel">Prix du carburant</span>
-          <div class="fright"><input type="number" id="prix_ess" value="1.85" min="0" step="0.01" inputmode="decimal"><span class="unit">€/L</span></div>
-        </div>
+      <div class="slabel">Economies annuelles</div>
+      <div class="detail">
+        <div class="drow"><span class="dkey">Carburant vs electricite</span><span class="dval c-green" id="roi_eco_carbu">-</span></div>
+        <div class="drow"><span class="dkey">Entretien Renegade</span><span class="dval c-red" id="roi_entretien_old">-</span></div>
+        <div class="drow"><span class="dkey">Entretien T03</span><span class="dval c-green" id="roi_entretien_new">-</span></div>
+        <div class="drow"><span class="dkey">Economie entretien</span><span class="dval c-green" id="roi_eco_entretien">-</span></div>
+        <div class="drow" style="border-top:2px solid #dce8de;padding-top:13px;"><span class="dkey" style="font-weight:700;color:#0f1923;">TOTAL economise / an</span><span class="dval c-green" style="font-size:17px;" id="roi_total_an">-</span></div>
       </div>
-      <div class="slabel">Leapmotor T0
+      <div class="slabel">Rentabilite</div>
+      <div class="roi-hero neu" id="roi_hero">
+        <div class="hero-lbl">Rentable en</div>
+        <div class="hero-val" id="roi_annees">-</div>
+        <div class="hero-sub" id="roi_sub">-</div>
+      </div>
+      <div class="slabel">Evolution annuelle</div>
+      <div class="timeline">
+        <div class="tl-title">Gain cumule par rapport a l investissement initial</div>
+        <div class="tl-track"><div class="tl-fill" id="tl_fill" style="width:0%;"></div></div>
+        <div class="tl-labels"><span>An 0</span><span id="tl_label_right">-</span></div>
+        <div id="tl_milestones"></div>
+      </div>
+      <div class="slabel">Simulation sur 10 ans</div>
+      <div class="proj" id="roi_10ans"></div>
+    </div>
+  </div>
+
+  <!-- HISTORIQUE -->
+  <div class="page" id="page-historique">
+    <div id="history-list"><div class="empty">Aucun trajet sauvegarde.<br>Utilisez l onglet Calcul ou Periode pour commencer.</div></div>
+    <div class="hint" id="swipe-hint" style="display:none;">Glisser a gauche pour supprimer</div>
+  </div>
+
+  <!-- REGLAGES -->
+  <div class="page" id="page-reglages">
+    <div class="set-hero"><div class="set-title">Reglages</div><div class="set-sub">Valeurs par defaut de vos vehicules</div></div>
+    <div class="slabel">Jeep Renegade</div>
+    <div class="card">
+      <div class="field"><span class="flabel">Conso. essence</span><div class="fright"><input type="number" id="s_ess" value="7" step="0.1" inputmode="decimal"><span class="unit">L/100km</span></div></div>
+      <div class="field"><span class="flabel">Prix essence</span><div class="fright"><input type="number" id="s_pess" value="1.85" step="0.01" inputmode="decimal"><span class="unit">EUR/L</span></div></div>
+    </div>
+    <div class="slabel">Leapmotor T03</div>
+    <div class="card">
+      <div class="field"><span class="flabel">Consommation</span><div class="fright"><input type="number" id="s_elec" value="13.5" step="0.5" inputmode="decimal"><span class="unit">kWh/100km</span></div></div>
+      <div class="field"><span class="flabel">Prix electricite</span><div class="fright"><input type="number" id="s_pelec" value="0.22" step="0.01" inputmode="decimal"><span class="unit">EUR/kWh</span></div></div>
+    </div>
+    <button class="btn btn-green" onclick="saveSettings()">Sauvegarder les reglages</button>
+    <div class="slabel" style="margin-top:24px;">Danger</div>
+    <button class="btn btn-danger" onclick="clearHistory()">Effacer tout l historique</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+var hist=JSON.parse(localStorage.getItem('ec_hist')||'[]');
+function switchTab(name){
+  var names=['calcul','periode','roi','historique','reglages'];
+  var tabs=document.querySelectorAll('.tab');
+  for(var i=0;i<names.length;i++){
+    var pg=document.getElementById('page-'+names[i]);
+    if(names[i]===name){pg.style.display='block';tabs[i].className='tab active';}
+    else{pg.style.display='none';tabs[i].className='tab';}
+  }
+  if(name==='historique')renderHistory();
+  if(name==='reglages')loadSettings();
+  if(name==='periode'&&!document.getElementById('p_date_debut').value)initDates();
+  if(name==='roi')syncROI();
+}
+function initDates(){
+  var t=new Date(),f=new Date(t.getFullYear(),t.getMonth(),1);
+  document.getElementById('p_date_debut').value=fdi(f);
+  document.getElementById('p_date_fin').value=fdi(t);
+  syncP();
+}
+function fdi(d){var y=d.getFullYear(),m=d.getMonth()+1,day=d.getDate();return y+'-'+(m<10?'0'+m:m)+'-'+(day<10?'0'+day:day);}
+function fdfr(s){var p=s.split('-');return p[2]+'/'+p[1]+'/'+p[0];}
+function syncP(){var s=JSON.parse(localStorage.getItem('ec_settings')||'{}');if(s.ess)document.getElementById('p_conso_ess').value=s.ess;if(s.pess)document.getElementById('p_prix_ess').value=s.pess;if(s.elec)document.getElementById('p_conso_elec').value=s.elec;if(s.pelec)document.getElementById('p_prix_elec').value=s.pelec;}
+function syncROI(){var s=JSON.parse(localStorage.getItem('ec_settings')||'{}');if(s.ess)document.getElementById('r_conso_ess').value=s.ess;if(s.pess)document.getElementById('r_prix_ess').value=s.pess;if(s.elec)document.getElementById('r_conso_elec').value=s.elec;if(s.pelec)document.getElementById('r_prix_elec').value=s.pelec;}
+function fE(v){return v.toFixed(2)+' EUR';}
+function fS(v){return (v>=0?'+':'')+v.toFixed(2)+' EUR';}
+function pad(n){return n<10?'0'+n:n;}
+
+function calculateDay(){
+  var km=parseFloat(document.getElementById('km').value)||0;
+  var ce=parseFloat(document.getElementById('conso_ess').value)||0,pe=parseFloat(document.getElementById('prix_ess').value)||0;
+  var cel=parseFloat(document.getElementById('conso_elec').value)||0,pel=parseFloat(document.getElementById('prix_elec').value)||0;
+  var name=document.getElementById('km_name').value.trim();
+  var ct=(km/100)*ce*pe,kwh=(km/100)*cel,ce2=kwh*pel,eco=ct-ce2,lit=(km/100)*ce;
+  var co2=lit*2.31-kwh*0.05;if(co2<0)co2=0;
+  showDayRes(name||'Trajet Journalier',km,ce,pe,cel,pel,ct,kwh,ce2,eco,lit,co2);
+  window._cd={type:'day',name:name||'Trajet Journalier',km:km,ce:ce,pe:pe,cel:cel,pel:pel,cout_th:ct,kwh:kwh,cout_el:ce2,eco:eco,litres:lit,co2:co2};
+}
+function showDayRes(name,km,ce,pe,cel,pel,ct,kwh,ce2,eco,lit,co2){
+  document.getElementById('km_name').value=name==='Trajet Journalier'?'':name;
+  document.getElementById('km').value=km;
+  document.getElementById('conso_ess').value=ce;document.getElementById('prix_ess').value=pe;
+  document.getElementById('conso_elec').value=cel;document.getElementById('prix_elec').value=pel;
+  var ev=document.getElementById('d_eco_big');ev.textContent=fS(eco);ev.className=eco>=0?'hero-val':'hero-val neg';
+  document.getElementById('d_eco_sub').textContent=eco>=0?'vs '+fE(ct)+' avec essence':'T03 coute '+Math.abs(eco).toFixed(2)+' EUR de plus';
+  document.getElementById('d_th').textContent=fE(ct);document.getElementById('d_elec').textContent=fE(ce2);
+  document.getElementById('d_litres').textContent=lit.toFixed(2)+' L';document.getElementById('d_kwh').textContent=kwh.toFixed(1)+' kWh';
+  document.getElementById('d_co2').textContent=co2.toFixed(2)+' kg';
+  document.getElementById('d_7j').textContent=fS(eco*7);document.getElementById('d_1m').textContent=fS(eco*30);document.getElementById('d_1a').textContent=fS(eco*365);
+  document.getElementById('results-day').style.display='block';
+}
+function saveDayEntry(){
+  if(!window._cd)return;
+  var d=new Date(),ds=pad(d.getDate())+'/'+pad(d.getMonth()+1)+'/'+d.getFullYear();
+  hist.unshift({id:'id_'+Date.now()+'_'+Math.floor(Math.random()*1000),type:'day',date:ds,name:window._cd.name,km:window._cd.km,ce:window._cd.ce,pe:window._cd.pe,cel:window._cd.cel,pel:window._cd.pel,cout_th:window._cd.cout_th,cout_el:window._cd.cout_el,eco:window._cd.eco,litres:window._cd.litres,kwh:window._cd.kwh,co2:window._cd.co2});
+  if(hist.length>90)hist=hist.slice(0,90);
+  localStorage.setItem('ec_hist',JSON.stringify(hist));
+  document.getElementById('km_name').value='';showToast('Trajet sauvegarde !');
+}
+
+function calculatePeriod(){
+  var deb=document.getElementById('p_date_debut').value,fin=document.getElementById('p_date_fin').value;
+  var km=parseFloat(document.getElementById('p_km').value)||0;
+  var ce=parseFloat(document.getElementById('p_conso_ess').value)||0,pe=parseFloat(document.getElementById('p_prix_ess').value)||0;
+  var cel=parseFloat(document.getElementById('p_conso_elec').value)||0,pel=parseFloat(document.getElementById('p_prix_elec').value)||0;
+  var name=document.getElementById('p_name').value.trim();
+  var err=document.getElementById('p_err');
+  if(!deb||!fin||km<=0||new Date(fin)<new Date(deb)){err.style.display='block';return;}
+  err.style.display='none';
+  var nbJ=Math.round((new Date(fin)-new Date(deb))/86400000)+1;
+  var ct=(km/100)*ce*pe,kwh=(km/100)*cel,ce2=kwh*pel,eco=ct-ce2,lit=(km/100)*ce;
+  var co2=lit*2.31-kwh*0.05;if(co2<0)co2=0;
+  showPeriodRes(name||'Periode Globale',deb,fin,km,ce,pe,cel,pel,nbJ,ct,kwh,ce2,eco,lit,co2);
+  window._cp={type:'period',name:name||'Periode Globale',deb:deb,fin:fin,km:km,ce:ce,pe:pe,cel:cel,pel:pel,nbJours:nbJ,cout_th:ct,kwh:kwh,cout_el:ce2,eco:eco,litres:lit,co2:co2};
+}
+function showPeriodRes(name,deb,fin,km,ce,pe,cel,pel,nbJ,ct,kwh,ce2,eco,lit,co2){
+  document.getElementById('p_name').value=name==='Periode Globale'?'':name;
+  document.getElementById('p_date_debut').value=deb;document.getElementById('p_date_fin').value=fin;document.getElementById('p_km').value=km;
+  document.getElementById('p_conso_ess').value=ce;document.getElementById('p_prix_ess').value=pe;document.getElementById('p_conso_elec').value=cel;document.getElementById('p_prix_elec').value=pel;
+  var ej=eco/nbJ,ean=ej*365,c2an=(co2/nbJ)*365;
+  document.getElementById('p_label_dates').textContent=fdfr(deb)+' au '+fdfr(fin);
+  document.getElementById('p_label_days').textContent=nbJ+' jours | '+km+' km';
+  var ev=document.getElementById('p_eco_big');ev.textContent=fS(eco);ev.className=eco>=0?'hero-val':'hero-val neg';
+  document.getElementById('p_eco_sub').textContent=eco>=0?'economises vs essence':'depenses supplementaires';
+  document.getElementById('p_eco_jour').textContent=fS(ej);document.getElementById('p_eco_sem').textContent=fS(ej*7);document.getElementById('p_eco_mois').textContent=fS(ej*30);
+  document.getElementById('p_r_km').textContent=km+' km';document.getElementById('p_r_th').textContent=fE(ct);document.getElementById('p_r_elec').textContent=fE(ce2);
+  document.getElementById('p_r_litres').textContent=lit.toFixed(1)+' L';document.getElementById('p_r_co2').textContent=co2.toFixed(1)+' kg';
+  document.getElementById('p_eco_an').textContent=fS(ean);document.getElementById('p_co2_an').textContent=c2an.toFixed(0)+' kg';
+  renderBar(ct,ce2);document.getElementById('results-period').style.display='block';
+}
+function savePeriodEntry(){
+  if(!window._cp)return;
+  var d=new Date(),ds=pad(d.getDate())+'/'+pad(d.getMonth()+1)+'/'+d.getFullYear();
+  hist.unshift({id:'id_'+Date.now()+'_'+Math.floor(Math.random()*1000),type:'period',date:ds,name:window._cp.name,deb:window._cp.deb,fin:window._cp.fin,nbJours:window._cp.nbJours,km:window._cp.km,ce:window._cp.ce,pe:window._cp.pe,cel:window._cp.cel,pel:window._cp.pel,cout_th:window._cp.cout_th,cout_el:window._cp.cout_el,eco:window._cp.eco,litres:window._cp.litres,kwh:window._cp.kwh,co2:window._cp.co2});
+  if(hist.length>90)hist=hist.slice(0,90);
+  localStorage.setItem('ec_hist',JSON.stringify(hist));
+  document.getElementById('p_name').value='';showToast('Periode sauvegardee !');
+}
+
+function calculateROI(){
+  var pT=parseFloat(document.getElementById('r_prix_t03').value)||0;
+  var bonus=parseFloat(document.getElementById('r_bonus').value)||0;
+  var rev=parseFloat(document.getElementById('r_revente').value)||0;
+  var kmAn=parseFloat(document.getElementById('r_km_an').value)||0;
+  var cE=parseFloat(document.getElementById('r_conso_ess').value)||0,pE=parseFloat(document.getElementById('r_prix_ess').value)||0;
+  var cEl=parseFloat(document.getElementById('r_conso_elec').value)||0,pEl=parseFloat(document.getElementById('r_prix_elec').value)||0;
+  var eOld=(parseFloat(document.getElementById('r_vidange').value)||0)+(parseFloat(document.getElementById('r_distribution').value)||0)+(parseFloat(document.getElementById('r_freins_old').value)||0)+(parseFloat(document.getElementById('r_ct_old').value)||0)+(parseFloat(document.getElementById('r_assurance_old').value)||0)+(parseFloat(document.getElementById('r_divers_old').value)||0);
+  var eNew=(parseFloat(document.getElementById('r_revision_t03').value)||0)+(parseFloat(document.getElementById('r_freins_new').value)||0)+(parseFloat(document.getElementById('r_ct_new').value)||0)+(parseFloat(document.getElementById('r_assurance_new').value)||0)+(parseFloat(document.getElementById('r_divers_new').value)||0);
+  var invest=pT-bonus-rev;
+  var carbuOld=(kmAn/100)*cE*pE,carbuNew=(kmAn/100)*cEl*pEl,ecoCarbu=carbuOld-carbuNew;
+  var ecoEnt=eOld-eNew,totalAn=ecoCarbu+ecoEnt;
+  document.getElementById('roi_prix_t03').textContent=fE(pT);
+  document.getElementById('roi_bonus').textContent='- '+fE(bonus);
+  document.getElementById('roi_revente').textContent='- '+fE(rev);
+  document.getElementById('roi_diff_achat').textContent=fE(invest);
+  document.getElementById('roi_eco_carbu').textContent=fS(ecoCarbu)+'/an';
+  document.getElementById('roi_entretien_old').textContent=fE(eOld)+'/an';
+  document.getElementById('roi_entretien_new').textContent=fE(eNew)+'/an';
+  document.getElementById('roi_eco_entretien').textContent=fS(ecoEnt)+'/an';
+  document.getElementById('roi_total_an').textContent=fS(totalAn)+'/an';
+  var hero=document.getElementById('roi_hero'),hv=document.getElementById('roi_annees'),hs=document.getElementById('roi_sub');
+  if(totalAn<=0){
+    hero.className='roi-hero neg';hv.textContent='Jamais';hs.textContent='Les economies ne couvrent pas l investissement.';
+    document.getElementById('tl_fill').style.width='0%';document.getElementById('tl_milestones').innerHTML='';document.getElementById('roi_10ans').innerHTML='';
+  } else {
+    var aEx=invest/totalAn,aCeil=Math.ceil(aEx),mois=Math.round(aEx*12);
+    hero.className='roi-hero '+(aCeil<=3?'pos':aCeil<=6?'neu':'neg');
+    hv.textContent=invest<=0?'Deja rentable !': (aCeil<1?'Moins d 1 an':aCeil+' an'+(aCeil>1?'s':''));
+    hs.textContent=invest<=0?'Le T03 est moins cher a l achat net et plus economique.':'Soit ~'+mois+' mois - '+fS(totalAn)+'/an economies';
+    // progression bar: % de l an de rentabilite accompli si on est a annee 0
+    var pct=invest<=0?100:0;
+    document.getElementById('tl_fill').style.width=pct+'%';
+    document.getElementById('tl_label_right').textContent=invest<=0?'Rentable !':'Rentable an '+aCeil;
+    var ms='',cum=-invest;
+    for(var y=1;y<=10;y++){
+      cum+=totalAn;var gc=cum>=0?'c-green':'c-red';
+      var mark=cum>=0&&(cum-totalAn)<0?' (seuil ROI)':'';
+      ms+='<div class="tl-row"><span class="tl-yr">Annee '+y+mark+'</span><span class="tl-amt '+gc+'">'+fS(cum)+'</span></div>';
+    }
+    document.getElementById('tl_milestones').innerHTML=ms;
+    var p10='',yrs=[1,2,3,5,7,10];
+    for(var ti=0;ti<yrs.length;ti++){var yr=yrs[ti],g=totalAn*yr-invest,gc2=g>=0?'c-green':'c-red';p10+='<div class="prow"><span class="plbl"><span class="pdot" style="background:'+(g>=0?'#86efac':'#fca5a5')+';"></span>'+yr+' an'+(yr>1?'s':'')+'</span><span class="pval '+gc2+'">'+fS(g)+'</span></div>';}
+    document.getElementById('roi_10ans').innerHTML=p10;
+  }
+  document.getElementById('results-roi').style.display='block';
+}
+
+function renderBar(th,el){
+  var max=Math.max(th,el,0.01),ht=Math.round((th/max)*75),he=Math.round((el/max)*75);
+  document.getElementById('bar_chart').innerHTML='<div class="bar-col"><div class="bar-val c-red">'+th.toFixed(2)+'</div><div class="bar" style="height:'+ht+'px;background:#fca5a5;"></div><div class="bar-lbl">Essence</div></div><div class="bar-col"><div class="bar-val c-green">'+el.toFixed(2)+'</div><div class="bar" style="height:'+he+'px;background:#86efac;"></div><div class="bar-lbl">Electrique</div></div>';
+}
+
+function openHist(id){
+  var item=null;for(var i=0;i<hist.length;i++){if(hist[i].id===id){item=hist[i];break;}}
+  if(!item)return;
+  if(item.type==='period'){showPeriodRes(item.name,item.deb,item.fin,item.km,item.ce||7,item.pe||1.85,item.cel||13.5,item.pel||0.22,item.nbJours,item.cout_th,item.kwh,item.cout_el,item.eco,item.litres,item.co2);window._cp=Object.assign({},item);switchTab('periode');}
+  else{showDayRes(item.name,item.km,item.ce||7,item.pe||1.85,item.cel||13.5,item.pel||0.22,item.cout_th,item.kwh,item.cout_el,item.eco,item.litres,item.co2);window._cd=Object.assign({},item);switchTab('calcul');}
+  showToast('Statistiques rechargees !');
+}
+function delHist(id){
+  for(var i=0;i<hist.length;i++){if(hist[i].id===id){hist.splice(i,1);break;}}
+  localStorage.setItem('ec_hist',JSON.stringify(hist));renderHistory();showToast('Supprime !');
+}
+function bindSwipe(wrap,item,id){
+  var sx=0,cx=0,drag=false,del=false,thr=70;
+  function start(x){sx=x;cx=x;drag=true;del=false;}
+  function move(x){if(!drag)return;cx=x;var dx=cx-sx;if(dx>0)dx=0;item.style.transform='translateX('+dx+'px)';}
+  function end(){
+    if(!drag)return;drag=false;var dx=cx-sx;
+    if(dx<-thr){del=true;item.style.transition='transform 0.25s';item.style.transform='translateX(-110%)';wrap.style.transition='max-height 0.3s,opacity 0.3s,margin 0.3s';wrap.style.maxHeight=wrap.offsetHeight+'px';setTimeout(function(){wrap.style.maxHeight='0';wrap.style.opacity='0';wrap.style.marginBottom='0';},50);setTimeout(function(){delHist(id);},360);}
+    else{item.style.transition='transform 0.2s';item.style.transform='translateX(0)';setTimeout(function(){item.style.transition='';},220);}
+  }
+  item.addEventListener('touchstart',function(e){start(e.touches[0].clientX);},{passive:true});
+  item.addEventListener('touchmove',function(e){move(e.touches[0].clientX);},{passive:true});
+  item.addEventListener('touchend',function(){end();},{passive:true});
+  item.addEventListener('click',function(){if(!del&&Math.abs(cx-sx)<10)openHist(id);});
+  item.addEventListener('contextmenu',function(e){e.preventDefault();delHist(id);});
+}
+function renderHistory(){
+  var el=document.getElementById('history-list'),hint=document.getElementById('swipe-hint');
+  if(!hist.length){el.innerHTML='<div class="empty">Aucun trajet sauvegarde.<br>Utilisez l onglet Calcul ou Periode pour commencer.</div>';if(hint)hint.style.display='none';return;}
+  var tot=0,tco2=0,tkm=0;for(var i=0;i<hist.length;i++){tot+=hist[i].eco||0;tco2+=hist[i].co2||0;tkm+=hist[i].km||0;}
+  el.innerHTML='<div class="hist-hero"><div class="hh-lbl">Total economise</div><div class="hh-val">'+fS(tot)+'</div><div class="hh-sub">'+tkm+' km &middot; '+tco2.toFixed(1)+' kg CO2 evites &middot; '+hist.length+' entree(s)</div></div><div class="slabel">Historique</div>';
+  if(hint)hint.style.display='block';
+  for(var j=0;j<hist.length;j++){
+    var h=hist[j];if(!h.id)h.id='id_l_'+j;
+    var cls=h.eco>=0?'c-green':'c-red',badge=h.type==='period'?' [Periode]':' [Trajet]';
+    var w=document.createElement('div');w.className='hist-wrapper';w.style.maxHeight='200px';
+    var bg=document.createElement('div');bg.className='hist-delete-bg';bg.innerHTML='<div class="hist-delete-icon">&#128465;</div>';
+    var it=document.createElement('div');it.className='hist-item';
+    it.innerHTML='<div><div class="hi-title">'+(h.name||'Trajet')+badge+'</div><div class="hi-date">'+h.date+'</div><div class="hi-sub">'+h.km+' km &middot; '+(h.co2||0).toFixed(1)+' kg CO2</div></div><div class="hi-eco '+cls+'">'+fS(h.eco)+'</div>';
+    w.appendChild(bg);w.appendChild(it);el.appendChild(w);bindSwipe(w,it,h.id);
+  }
+}
+function loadSettings(){var s=JSON.parse(localStorage.getItem('ec_settings')||'{}');if(s.ess)document.getElementById('s_ess').value=s.ess;if(s.pess)document.getElementById('s_pess').value=s.pess;if(s.elec)document.getElementById('s_elec').value=s.elec;if(s.pelec)document.getElementById('s_pelec').value=s.pelec;}
+function saveSettings(){var s={ess:document.getElementById('s_ess').value,pess:document.getElementById('s_pess').value,elec:document.getElementById('s_elec').value,pelec:document.getElementById('s_pelec').value};localStorage.setItem('ec_settings',JSON.stringify(s));document.getElementById('conso_ess').value=s.ess;document.getElementById('prix_ess').value=s.pess;document.getElementById('conso_elec').value=s.elec;document.getElementById('prix_elec').value=s.pelec;showToast('Reglages sauvegardes !');}
+function clearHistory(){if(confirm('Effacer tout l historique ?')){hist=[];localStorage.removeItem('ec_hist');renderHistory();showToast('Historique efface');}}
+function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.className='toast show';setTimeout(function(){t.className='toast';},2500);}
+document.getElementById('page-periode').style.display='none';
+document.getElementById('page-roi').style.display='none';
+document.getElementById('page-historique').style.display='none';
+document.getElementById('page-reglages').style.display='none';
+var iS=JSON.parse(localStorage.getItem('ec_settings')||'{}');
+if(iS.ess)document.getElementById('conso_ess').value=iS.ess;
+if(iS.pess)document.getElementById('prix_ess').value=iS.pess;
+if(iS.elec)document.getElementById('conso_elec').value=iS.elec;
+if(iS.pelec)document.getElementById('prix_elec').value=iS.pelec;
+</script>
+</body>
+</html>
